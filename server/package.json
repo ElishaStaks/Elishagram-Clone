@@ -1,12 +1,13 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Elishagram backend server using Express and MongoDB",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=production node src/server",
+    "dev": "nodemon src/server"
   },
-  "author": "",
+  "author": "Elisha Anagnostakis",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

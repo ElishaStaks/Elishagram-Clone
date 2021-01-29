@@ -21,6 +21,10 @@ const PostSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  files: {
+    type: [String],
+    validate: (v) => v === null || v.length > 0,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

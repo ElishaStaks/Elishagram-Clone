@@ -1,6 +1,7 @@
 const User = require("../models/User");
+const asyncHandler = require("../middlewares/asyncHandler");
 
-signin = (req, res, next) => {
+exports.signin = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
 
     // Make sure the email and password is not empty
@@ -35,4 +36,27 @@ signin = (req, res, next) => {
 
     // then send json web token as response
     res.status(200).json({ success: true, token });
-};
+});
+
+exports.signup = asyncHandler(async (req, res, next) => {
+    // all details needed for the user to sign up
+    const { fullname, username, email, password } = req.body;
+    
+    // creates user object
+    const user = await User.create({ fullname, username, email, password });
+
+    const token = user.getJwtToken();
+
+    res.status(200).json({ success: true, token });
+});
+
+exports.me = asyncHandler(async (req, res, next) => {
+  const { avatar, username, fullname, email, _id, bio } = req.user;
+
+  res
+    .status(200)
+    .json({
+      success: true,
+      data: { avatar, username, fullname, email, _id, bio },
+    });
+});
