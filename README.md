@@ -1,6 +1,6 @@
 # Elishagram
 
-Instagram clone (both client and server side) built using React and MongoDB.
+Instagram clone (both client and server side) built with mongoDB, express js, react ts, nodejs.
 
 ## Note
 This repository will continue under development and I will continue to add more features to it.
@@ -21,7 +21,10 @@ This repository will continue under development and I will continue to add more 
 
 ## Screenshots
 <p>
-<img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612696351/HomePage_ib0l7x.png">
+ <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612706511/home_page_eepp4t.png">
+ <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612706511/profile_page_gcxxyb.png">
+ <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612706510/other_user_profile_bfgslu.png">
+ <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612706511/create_post_page_jxc7e1.png">
 </p>
 
 ## Getting Started
@@ -55,8 +58,6 @@ $ node src/server
 
 #### 5. Run Client
 ```sh
-$ cd ..
-$ cd client
 $ npm start
 ```
 The app should launch locally, enjoy :)
