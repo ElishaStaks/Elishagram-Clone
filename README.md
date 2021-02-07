@@ -37,11 +37,6 @@ $ git clone https://github.com/ElishaStaks/Elishagram-Clone
 $ cd Elishagram-Clone/
 ```
 
-#### 2. Open up in Visual Studio Code
-```sh
-$ code .
-```
-
 #### 3. Install dependencies
 ```sh
 $ cd client
