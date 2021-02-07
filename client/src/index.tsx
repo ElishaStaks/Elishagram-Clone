@@ -5,13 +5,16 @@ import App from './containers/App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from './contexts/Theme/ThemeContext';
 import { UserProvider } from './contexts/User/UserContext';
+import { NewsFeedProvider } from './contexts/NewsFeed/NewsFeedContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <UserProvider>
+      <NewsFeedProvider>
         <ThemeProvider>
           <App />
         </ThemeProvider>
+      </NewsFeedProvider>
     </UserProvider>
   </React.StrictMode>,
   document.getElementById('root')

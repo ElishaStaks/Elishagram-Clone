@@ -4,28 +4,21 @@ import { useUserContext } from "../contexts/User/UserContext";
 import FormWrapper from "../styles/Form";
 import logo  from '../assets/logo.png'
 
-interface SignupProps {
-    signin: () => void;
+interface SigninProps {
+    signup: () => void;
 }
 
-interface SignupCredentials {
-    fullname: string;
-    username: string;
+interface SigninCredentials {
     email: string;
     password: string;
 }
 
-const Signup: React.FC<SignupProps> = props => {
-    // Grab the global user context
+const Signin: React.FC<SigninProps> = props => {
     const { setUser } = useUserContext();
-    const [fullname, setFullname] = useState("");
-    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const signupCreds: SignupCredentials = {
-        fullname: fullname,
-        username: username,
+    const signinCreds: SigninCredentials = {
         email: email,
         password: password
     }
@@ -50,27 +43,23 @@ const Signup: React.FC<SignupProps> = props => {
         setUser(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
     }
-
-    const handleSignup = async (creds: SignupCredentials) => {
+    const handleSignin = async (creds: SigninCredentials) => {
         // if the user hasn't added all the correct information
-        if (!fullname || !username || !email || !password) {
+        if (!email || !password) {
             // return a toast to the user
             return toast.error("Please fill in all the fields");
         }
 
         const body = {
-            fullname: creds.fullname,
-            username: creds.username,
             email: creds.email,
             password: creds.password
         };
 
         try {
-            console.log(body);
-            const { token } = await fetch("/signup", {
+             const { token } = await fetch("/signin", {
                 method: "POST",
                 headers: {
-                    "Content-Type":"application/json"
+                    "Content-Type":"application/json",
                 },
                 body: JSON.stringify(
                     body
@@ -86,60 +75,43 @@ const Signup: React.FC<SignupProps> = props => {
                 }
             })
             localStorage.setItem("token", token);
-            console.log(token);
         } catch(error) {
             return toast.error(error.message);
         }
 
         userClient();
+        toast.success("Signin successful");
 
-        setFullname("");
-        setUsername("");
         setEmail("");
         setPassword("");
     }
-
     return (
-        <FormWrapper onSubmit={(event) => {event.preventDefault(); handleSignup(signupCreds)}}>
+        <FormWrapper onSubmit={(event) => {event.preventDefault(); handleSignin(signinCreds)}}>
             <img src={logo} alt="logo" />
             <form>
                 <input 
-                    type="text" 
-                    placeholder="Full Name" 
-                    value={fullname} 
-                    onChange={(event) => setFullname(event.target.value)}
-                />
-
-                <input 
-                    type="text" 
-                    placeholder="Username" 
-                    value={username} 
-                    onChange={(event) => setUsername(event.target.value)}
-                />
-
-                <input 
                     type="email" 
-                    placeholder="Email" 
+                    placeholder="email" 
                     value={email} 
                     onChange={(event) => setEmail(event.target.value)}
                 />
 
                 <input 
                     type="password" 
-                    placeholder="Password" 
+                    placeholder="password" 
                     value={password} 
                     onChange={(event) => setPassword(event.target.value)}
                 />
 
-                <input type="submit" value="Sign up" className="signup-btn" />
+                <input type="submit" value="Sign in" className="signin-btn" />
             </form>
             <div>
                 <p>
-                    Already have an account? <span onClick={props.signin}>Sign in</span>
+                    Dont have an account? <span onClick={props.signup}>Sign up</span>
                 </p>
             </div>
         </FormWrapper>
     );
-}
+};
 
-export default Signup;
+export default Signin;

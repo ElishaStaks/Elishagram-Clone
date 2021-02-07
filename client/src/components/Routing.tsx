@@ -1,18 +1,26 @@
 import React from "react";
-import {BrowserRouter as Router, Route, Switch, useHistory} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import EditProfile from "../pages/EditProfile";
 import Home from "../pages/Home";
 import Profile from "../pages/Profile";
+import Container from "../styles/Container";
+import Navigation from "./navigation/Navigation";
 
+/**
+ * Handles the app routing of different pages
+ */
 const Routing = () => {
     return (
         <Router>
-            <Switch>
-                <Route path='/' component={Home} />
-                <Route path='/profile/edit' component={EditProfile}/>
-                <Route path='/:username' component={Profile}/>
-            </Switch>
+            <Navigation />
+            <Container>
+                <Switch>
+                    <Route exact path='/' component={Home} />
+                    <Route exact path='/:username' component={Profile}/>
+                    <Route exact path='/:username/edit' component={EditProfile}/>
+                </Switch>
+            </Container>
         </Router>
     );
 };

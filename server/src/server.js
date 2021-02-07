@@ -1,4 +1,3 @@
-// require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const auth = require("./routes/auth");
@@ -12,9 +11,13 @@ connectToDatabase();
 app.use(express.json());
 app.use(cors());
 
-app.use("/api/v1/auth", auth);
-app.use("/api/v1/users", user);
-app.use("/api/v1/posts", post);
+require('./models/Comment');
+require('./models/User');
+require('./models/Post');
+
+app.use(auth);
+app.use(user);
+app.use(post);
 
 const PORT = 5000;
 app.listen(PORT, console.log(`Server is running on localhost:${PORT}`));

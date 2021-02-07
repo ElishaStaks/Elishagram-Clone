@@ -25,13 +25,11 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Please enter your password"],
-    minlength: [6, "Password should be atleast minimum of 6 characters"],
-    maxlength: [12, "Password should be maximum of 12 characters"],
   },
   avatar: {
     type: String,
     default:
-      "https://res.cloudinary.com/douy56nkf/image/upload/v1594060920/defaults/txxeacnh3vanuhsemfc8.png",
+      "https://res.cloudinary.com/insta-image-cloud/image/upload/v1612271171/defaultProfile_trtyty.png",
   },
   bio: String,
   followers: [{ type: mongoose.Schema.ObjectId, ref: "User" }],

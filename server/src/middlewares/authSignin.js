@@ -1,24 +1,38 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const { JWT_SECRET } = require('../keys');
+exports.shieldUser = async (req, res, next) => {
+  let token;
 
-exports.shieldUser = (req, res, next) => {
-    const { authorization } = request.headers;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
 
-    // if authorization is not present
-    if (!authorization) {
-        response.status(401).json({error: "You must be logged in"});
+  if (!token) {
+    return next({
+      message: "You need to be logged in to visit this route",
+      statusCode: 403,
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    const user = await User.findById(decoded.id).select("-password");
+
+    if (!user) {
+      return next({ message: `No user found for ID ${decoded.id}` });
     }
 
-    // retrieve token from auth
-    const token = authorization.replace("Bearer ", "");
-    jwt.verify(token, process.env.JWT_SECRET, (error, payload) => {
-        if (error){
-            return response.status(403).json({error: "You must be logged in"});
-        }
-        const {_id} = payload;
-        User.findById(_id).then(userData => {
-            request.user = userData;
-            next();
-        });
+    req.user = user;
+    next();
+  } catch (err) {
+    next({
+      message: "You need to be logged in to visit this route",
+      statusCode: 403,
     });
+  }
 };

@@ -22,13 +22,18 @@ exports.follow = asyncHandler(async (req, res, next) => {
         });
     }
 
+      // only follow if the user is not following already
+    if (user.followers.includes(req.user.id)) {
+      return next({ message: "You are already following him", status: 400 });
+    }
+
     await User.findByIdAndUpdate(req.params.id, {
         $push: {followers: req.user.id },
         $inc: { followersCount: 1 },
     });
 
-    await User.findByIdAndUpdate(req.params.id, {
-        $push: {following: req.user.id },
+    await User.findByIdAndUpdate(req.user.id, {
+        $push: {following: req.params.id },
         $inc: { followingCount: 1 },
     });
 
@@ -63,22 +68,22 @@ exports.unfollow = asyncHandler(async (req, res, next) => {
 });
 
 exports.editUserProfile = asyncHandler(async(req, res, next) => {
-    const { fullname, username, email, bio, avatar } = req.body;
+    const { fullname, username, email, bio, avatar} = req.body;
 
     const updateFields = {};
 
     // adding fields to object
     if (fullname){
-        updateFields.fullname = fullname;
+      updateFields.fullname = fullname;
     }
     if (username){
-        updateFields.username = username;
+      updateFields.username = username;
     }
     if (email){
-        updateFields.email = email;
+      updateFields.email = email;
     }
     if (avatar){
-        updateFields.avatar = avatar;
+      updateFields.avatar = avatar;
     }
 
     const user = await User.findByIdAndUpdate(
@@ -126,13 +131,6 @@ exports.newsfeed = asyncHandler(async (req, res, next) => {
             post.isLiked = true;
         }
 
-        // is the loggedin saved this post
-        post.isSaved = false;
-        const savedPosts = req.user.savedPosts.map((post) => post.toString());
-        if (savedPosts.includes(post._id)) {
-            post.isSaved = true;
-        }
-
         // is the post belongs to the loggedin user
         post.isMine = false;
         if (post.user._id.toString() === req.user.id) {
@@ -149,4 +147,62 @@ exports.newsfeed = asyncHandler(async (req, res, next) => {
     });
 
     res.status(200).json({ success: true, data: posts });
+});
+
+exports.getUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ username: req.params.username })
+    .select("-password")
+    .populate({ path: "posts", select: "files commentsCount likesCount" })
+    .populate({ path: "followers", select: "avatar username fullname" })
+    .populate({ path: "following", select: "avatar username fullname" })
+    .lean()
+    .exec();
+
+  if (!user) {
+    return next({
+      message: `The user ${req.params.username} is not found`,
+      statusCode: 404,
+    });
+  }
+
+  user.isFollowing = false;
+  const followers = user.followers.map((follower) => follower._id.toString());
+
+  user.followers.forEach((follower) => {
+    follower.isFollowing = false;
+    if (req.user.following.includes(follower._id.toString())) {
+      follower.isFollowing = true;
+    }
+  });
+
+  user.following.forEach((user) => {
+    user.isFollowing = false;
+    if (req.user.following.includes(user._id.toString())) {
+      user.isFollowing = true;
+    }
+  });
+
+  if (followers.includes(req.user.id)) {
+    user.isFollowing = true;
+  }
+
+  user.isMe = req.user.id === user._id.toString();
+
+  res.status(200).json({ success: true, data: user });
+});
+
+exports.getUsers = asyncHandler(async (req, res, next) => {
+  let users = await User.find().select("-password").lean().exec();
+
+  users.forEach((user) => {
+    user.isFollowing = false;
+    const followers = user.followers.map((follower) => follower._id.toString());
+    if (followers.includes(req.user.id)) {
+      user.isFollowing = true;
+    }
+  });
+
+  users = users.filter((user) => user._id.toString() !== req.user.id);
+
+  res.status(200).json({ success: true, data: users });
 });
