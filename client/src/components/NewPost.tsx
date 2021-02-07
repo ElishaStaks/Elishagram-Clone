@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import { useNewsFeedContext } from "../contexts/NewsFeed/NewsFeedContext";
 import CreatePostWrapper from "../styles/CreatePost";
 import NewPostWrapper from "../styles/NewPostWrapper";
-import PostIcon from "./iconComponents/post";
 import PostModal from "./post/PostModal";
 
 const NewPost: React.FC = () => {

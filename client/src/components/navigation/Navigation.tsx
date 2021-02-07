@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useUserContext } from "../../contexts/User/UserContext";
 import HomeIcon from "../iconComponents/home";
-import NewPost from "../NewPost";
 import navlogo from '../../assets/navlogo.png';
 import NavigationModal from "./NavigationModal";
 import ModalContent from "./ModalContent";
