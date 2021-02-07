@@ -6,7 +6,7 @@ import PostModal from './PostModal';
 import CommentIcon from "../iconComponents/comment";
 import Avatar from "../../styles/Avatar";
 import LikePost from "./LikePost";
-import Comment from './Comment';
+import Comment from './comment/Comment';
 import { PostProps } from "../../Interfaces";
 import MoreIcon from "../iconComponents/dots";
 
@@ -116,7 +116,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
         </p>
 
         {post.comments?.slice(0, 2).map((comment: any) => (
-          <Comment key={comment._id} comment={comment} />
+            <Comment key={comment._id} comment={comment} />
         ))}
 
         {newComments.map((comment: any) => (

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNewsFeedContext } from "../contexts/NewsFeed/NewsFeedContext";
+import CreatePostWrapper from "../styles/CreatePost";
 import NewPostWrapper from "../styles/NewPostWrapper";
 import PostIcon from "./iconComponents/post";
 import PostModal from "./post/PostModal";
@@ -87,9 +88,11 @@ const NewPost: React.FC = () => {
 
     return (
         <NewPostWrapper>
-            <label htmlFor="upload-post">
-                <PostIcon fill="white" />
-            </label>
+            <CreatePostWrapper>
+                <label className="form-container" htmlFor="upload-post">
+                    Create Post
+                </label>
+            </CreatePostWrapper>
             <input
             id="upload-post"
             type="file"

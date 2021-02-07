@@ -1,5 +1,6 @@
 import React from "react";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import CreatePost from "../pages/CreatePost";
 
 import EditProfile from "../pages/EditProfile";
 import Home from "../pages/Home";
@@ -17,6 +18,7 @@ const Routing = () => {
             <Container>
                 <Switch>
                     <Route exact path='/' component={Home} />
+                    <Route exact path='/createpost' component={CreatePost}/>
                     <Route exact path='/:username' component={Profile}/>
                     <Route exact path='/:username/edit' component={EditProfile}/>
                 </Switch>

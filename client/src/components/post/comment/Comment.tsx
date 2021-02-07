@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { CommentProps } from "../../Interfaces";
-import CommentWrapper from "../../styles/CommentWrapper";
+import { CommentProps } from "../../../Interfaces";
+import CommentWrapper from "../../../styles/CommentWrapper";
 
 const Comment: React.FC<CommentProps> = ({ comment }) => {
     const history = useHistory();

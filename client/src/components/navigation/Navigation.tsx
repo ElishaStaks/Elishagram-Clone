@@ -7,6 +7,7 @@ import navlogo from '../../assets/navlogo.png';
 import NavigationModal from "./NavigationModal";
 import ModalContent from "./ModalContent";
 import { NavWrapper } from "../../styles/Navigation";
+import PostIcon from "../iconComponents/post";
 
 /**
  * Navigation component which allows the user to access their profile, logout and navigate to the newsfeed
@@ -38,7 +39,7 @@ const Navigation: React.FC = () => {
                         </Link>
                     </li>
                     <li>
-                        <NewPost />
+                        <Link to="/createpost"><PostIcon fill="white" /></Link>
                     </li>
                     <li>
                         {showModal && (
