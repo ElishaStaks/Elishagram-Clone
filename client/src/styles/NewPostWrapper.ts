@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const NewPostWrapper = styled("div")`
+
   .newpost-header {
     display: flex;
     justify-content: space-between;
@@ -27,6 +28,7 @@ const NewPostWrapper = styled("div")`
     padding: 0.5rem 1rem;
     border: none;
     resize: none;
+    background: #242526
   }
 
   .modal-content {

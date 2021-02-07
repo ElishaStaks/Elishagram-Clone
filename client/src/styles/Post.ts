@@ -115,8 +115,12 @@ export const PostModalWrapper = styled("div")`
   z-index: 100;
   overflow: hidden;
 
+  textarea {
+    color: white;
+  }
+
   .modal-content {
-    background: #FFF;
+    background: #242526;
     border-radius: 4px;
     margin: auto;
     justify-self: center;
@@ -126,5 +130,6 @@ export const PostModalWrapper = styled("div")`
     width: 100%;
     height: 100%;
     object-fit: contain;
+        border: 1px solid #DBDBDB;
   }
 `;
