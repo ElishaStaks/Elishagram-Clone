@@ -55,7 +55,7 @@ const Signup: React.FC<SignupProps> = props => {
         // if the user hasn't added all the correct information
         if (!fullname || !username || !email || !password) {
             // return a toast to the user
-            return toast.error("Please fill in all the fields");
+            return toast.error("You need to fill in all the fields");
         }
 
         const body = {
@@ -86,7 +86,6 @@ const Signup: React.FC<SignupProps> = props => {
                 }
             })
             localStorage.setItem("token", token);
-            console.log(token);
         } catch(error) {
             return toast.error(error.message);
         }

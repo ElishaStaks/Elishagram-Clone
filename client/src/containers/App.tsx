@@ -9,7 +9,7 @@ function App() {
   const { user } = useUserContext();
   return (
     <>
-      <ToastContainer />
+      <ToastContainer autoClose={1000} closeButton={false} />
       <GlobalStyle />
       {user? <Routing /> : <AuthState />}
     </>

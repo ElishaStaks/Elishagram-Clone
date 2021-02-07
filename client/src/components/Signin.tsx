@@ -47,7 +47,7 @@ const Signin: React.FC<SigninProps> = props => {
         // if the user hasn't added all the correct information
         if (!email || !password) {
             // return a toast to the user
-            return toast.error("Please fill in all the fields");
+            return toast.error("You need to fill in all the fields");
         }
 
         const body = {
@@ -80,7 +80,7 @@ const Signin: React.FC<SigninProps> = props => {
         }
 
         userClient();
-        toast.success("Signin successful");
+        toast.success("Sign in successful");
 
         setEmail("");
         setPassword("");
