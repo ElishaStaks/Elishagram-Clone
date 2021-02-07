@@ -1,6 +1,6 @@
 # Elishagram
 
-Instagram clone (both client and server side) built mongoDB, express js, react ts, nodejs.
+Instagram clone (both client and server side) built with mongoDB, express js, react ts, nodejs.
 
 ## Note
 This repository will continue under development and I will continue to add more features to it.
