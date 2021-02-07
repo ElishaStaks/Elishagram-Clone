@@ -58,8 +58,6 @@ $ node src/server
 
 #### 5. Run Client
 ```sh
-$ cd ..
-$ cd client
 $ npm start
 ```
 The app should launch locally, enjoy :)
