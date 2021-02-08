@@ -21,10 +21,11 @@ This repository will continue under development and I will continue to add more 
 
 ## Screenshots
 <p>
- <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612706511/home_page_eepp4t.png">
- <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612706511/profile_page_gcxxyb.png">
- <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612706510/other_user_profile_bfgslu.png">
- <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612706511/create_post_page_jxc7e1.png">
+ <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612758657/2_gwzx88.png">
+ <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612758656/4_xeulkj.png">
+ <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612758656/1_ihrhhh.png">
+ <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612758656/3_ouo7go.png">
+ <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1612758655/5_upvzfq.png">
 </p>
 
 ## Getting Started
