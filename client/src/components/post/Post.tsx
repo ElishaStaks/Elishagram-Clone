@@ -126,7 +126,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
 
       <div className="add-comment">
         <textarea
-          placeholder="Add a Comment"
+          placeholder="Add a Comment..."
           value={comment}
           onChange={(event: any) => setComment(event.target.value)}
           onKeyDown={handleAddComment}

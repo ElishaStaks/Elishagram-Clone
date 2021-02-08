@@ -1,6 +1,7 @@
 import React from "react";
 import { PostPreviewWrapper } from "../../styles/Profile";
 import CommentIcon from "../iconComponents/comment";
+import FilledHeartIcon from "../iconComponents/filledHeart";
 import HeartIcon from "../iconComponents/heart";
 
 const PostPreview: React.FC<any> = ({ posts }) => {
@@ -16,7 +17,7 @@ const PostPreview: React.FC<any> = ({ posts }) => {
           <div className="overlay">
             <div className="overlay-content">
               <span>
-                <HeartIcon /> {post.likesCount}
+                <FilledHeartIcon /> {post.likesCount}
               </span>
               <span>
                 <CommentIcon /> {post.commentsCount}
