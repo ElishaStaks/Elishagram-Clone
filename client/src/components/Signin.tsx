@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
 import { useUserContext } from "../contexts/User/UserContext";
 import FormWrapper from "../styles/Form";
 import logo  from '../assets/logo.png'
+import customToast from "../util/customToast";
 
 interface SigninProps {
     signup: () => void;
@@ -47,7 +47,7 @@ const Signin: React.FC<SigninProps> = props => {
         // if the user hasn't added all the correct information
         if (!email || !password) {
             // return a toast to the user
-            return toast.error("You need to fill in all the fields");
+            return customToast("You need to fill in all the fields");
         }
 
         const body = {
@@ -76,11 +76,11 @@ const Signin: React.FC<SigninProps> = props => {
             })
             localStorage.setItem("token", token);
         } catch(error) {
-            return toast.error(error.message);
+            return customToast(error.message);
         }
 
         userClient();
-        toast.success("Sign in successful");
+        customToast("Sign in successful");
 
         setEmail("");
         setPassword("");

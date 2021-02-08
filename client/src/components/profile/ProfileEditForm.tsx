@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useUserContext } from '../../contexts/User/UserContext';
 import Avatar from '../../styles/Avatar';
 import { ProfileEditFormWrapper } from '../../styles/Profile';
+import customToast from '../../util/customToast';
 
 const ProfileEditForm: React.FC = () => {
   const history = useHistory();
@@ -43,15 +43,15 @@ const ProfileEditForm: React.FC = () => {
     event.preventDefault();
 
     if (!fullname) {
-      toast.error("Name field should not be empty");
+      customToast("Name field should not be empty");
     }
 
     if (!username) {
-      toast.error("Username field should not be empty");
+      customToast("Username field should not be empty");
     }
 
     if (!email) {
-      toast.error("Email field should not be empty");
+      customToast("Email field should not be empty");
     }
 
     const body = {
@@ -81,7 +81,7 @@ const ProfileEditForm: React.FC = () => {
         setUser(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
         history.push(`/${user.username || body.username}`);
-    }).catch((error) => toast.error(error.message));
+    }).catch((error) => customToast(error.message));
   };
 
   return (

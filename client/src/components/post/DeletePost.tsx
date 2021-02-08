@@ -1,7 +1,7 @@
 import React from "react";
-import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import { useNewsFeedContext } from "../../contexts/NewsFeed/NewsFeedContext";
+import customToast from "../../util/customToast";
 
 interface DeletePostProps {
     postId: string;
@@ -24,7 +24,7 @@ const DeletePost: React.FC<DeletePostProps> = ({ postId, closeModal, goToHome })
 
         // delete the post from the newsfeed context
         setNewsFeed(newsFeed.filter((post: {_id: string}) => post._id !== postId));
-        toast.success("Your post has been deleted successfully");
+        customToast("Your post has been deleted successfully");
 
         // fetch request to thhe server to delete the post with the correct post id
         fetch(`/${postId}`, {

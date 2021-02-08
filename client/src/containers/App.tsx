@@ -1,5 +1,6 @@
 import React from "react";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, Zoom } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useUserContext } from "../contexts/User/UserContext";
 import Routing from "../components/Routing";
 import AuthState from "../components/AuthState";
@@ -9,8 +10,8 @@ function App() {
   const { user } = useUserContext();
   return (
     <>
-      <ToastContainer autoClose={1000} closeButton={false} />
       <GlobalStyle />
+      <ToastContainer transition={Zoom} autoClose={3000} />
       {user? <Routing /> : <AuthState />}
     </>
   );

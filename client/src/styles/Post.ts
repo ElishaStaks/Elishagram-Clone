@@ -59,11 +59,6 @@ export const PostWrapper = styled("div")`
     text-decoration: underline;
   }
 
-  .view-comments {
-    color: #B2B2B2;
-    cursor: pointer;
-  }
-
   textarea {
     height: 100%;
     width: 100%;

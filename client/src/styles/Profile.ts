@@ -83,11 +83,6 @@ export const ProfileHeaderWrapper = styled("div")`
     button {
       margin-left: 0;
     }
-
-    .bio-mobile {
-      margin: 1rem 0;
-      display: block;
-    }
   }
 
   @media screen and (max-width: 420px) {
@@ -286,6 +281,7 @@ export const PostPreviewWrapper = styled("div")`
 		img, .overlay {
 			height: 240px;
 			width: 100%;
+    }
 	}
 
 	@media screen and (max-width: 500px) {
@@ -295,6 +291,7 @@ export const PostPreviewWrapper = styled("div")`
 			height: 200px;
 			width: 100%;
 	  }
+  }
 
 	@media screen and (max-width: 400px) {
 		img, .overlay {

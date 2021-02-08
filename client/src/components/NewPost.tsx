@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { useNewsFeedContext } from "../contexts/NewsFeed/NewsFeedContext";
 import CreatePostWrapper from "../styles/CreatePost";
 import NewPostWrapper from "../styles/NewPostWrapper";
+import customToast from "../util/customToast";
 import PostModal from "./post/PostModal";
 
 const NewPost: React.FC = () => {
@@ -45,7 +45,7 @@ const NewPost: React.FC = () => {
 
     const uploadPost = (event: any) => {
         if (!caption) {
-            return toast.error("Please add a caption");
+            return customToast("Please add a caption");
         }
 
         setShowModal(false); // hide modal
@@ -81,7 +81,7 @@ const NewPost: React.FC = () => {
             post.isMine = true;
             setNewsFeed([post, ...newsFeed]); // adds post to the newsfeed
             window.scrollTo(0, 0);
-            toast.success("Your post has been uploaded successfully");
+            customToast("Your post has been uploaded successfully");
         });
     };
 

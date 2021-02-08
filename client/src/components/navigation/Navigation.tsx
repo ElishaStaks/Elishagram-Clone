@@ -7,6 +7,7 @@ import NavigationModal from "./NavigationModal";
 import ModalContent from "./ModalContent";
 import { NavWrapper } from "../../styles/Navigation";
 import PostIcon from "../iconComponents/post";
+import customToast from "../../util/customToast";
 
 /**
  * Navigation component which allows the user to access their profile, logout and navigate to the newsfeed
@@ -23,6 +24,7 @@ const Navigation: React.FC = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
         history.push("/");
+        customToast("Signed out successfull")
     }
 
     return (
