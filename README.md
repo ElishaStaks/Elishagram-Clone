@@ -57,6 +57,12 @@ $ npm start
 ```
 The app should launch locally, enjoy :)
 
+Here is a test user you can log in with:
+
+email: user@gmail.com
+
+password: 123456
+
 ## Authors
 Elisha Anagnostakis : 
 [Website](https://elishaanagnostakis.mystrikingly.com/)
