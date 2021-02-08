@@ -1,10 +1,8 @@
-const mongoose = require("mongoose");
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Comment = require("../models/Comment");
-const asyncHandler = require("../middlewares/asyncHandler");
 
-exports.addPost = asyncHandler(async (req, res, next) => {
+exports.addPost = async (req, res, next) => {
     // requests the caption and uploaded files
     const { caption, files } = req.body;
     // requests the users id
@@ -25,9 +23,11 @@ exports.addPost = asyncHandler(async (req, res, next) => {
         .execPopulate();
 
     res.status(200).json({ success: true, data: post });
-});
+    
+    Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.deletePost = asyncHandler(async (req, res, next) => {
+exports.deletePost = async (req, res, next) => {
     // request post id
     const post = await Post.findById(req.params.id);
 
@@ -56,9 +56,11 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
     await post.remove();
 
     res.status(200).json({ success: true, data: {} });
-});
+    
+    Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.likePost = asyncHandler(async (req, res, next) => {
+exports.likePost = async (req, res, next) => {
     // make sure that the post exists
     const post = await Post.findById(req.params.id);
 
@@ -87,9 +89,11 @@ exports.likePost = asyncHandler(async (req, res, next) => {
     }
 
     res.status(200).json({ success: true, data: {} });
-});
+    
+    Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.addComment = asyncHandler(async (req, res, next) => {
+exports.addComment = async (req, res, next) => {
     // request post id
     const post = await Post.findById(req.params.id);
 
@@ -118,9 +122,11 @@ exports.addComment = asyncHandler(async (req, res, next) => {
         .execPopulate();
 
     res.status(200).json({ success: true, data: comment });
-});
+    
+    Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.deleteComment = asyncHandler(async (req, res, next) => {
+exports.deleteComment = async (req, res, next) => {
     const post = await Post.findById(req.params.id);
 
     if (!post) {
@@ -161,9 +167,11 @@ exports.deleteComment = asyncHandler(async (req, res, next) => {
     await comment.remove();
 
     res.status(200).json({ success: true, data: {} });
-});
+    
+    Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.getPost = asyncHandler(async (req, res, next) => {
+exports.getPost = async (req, res, next) => {
     const post = await Post.findById(req.params.id)
         .populate({
         path: "comments",
@@ -205,10 +213,14 @@ exports.getPost = asyncHandler(async (req, res, next) => {
     });
 
     res.status(200).json({ success: true, data: post });
-});
+    
+    Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.getPosts = asyncHandler(async (req, res, next) => {
+exports.getPosts = async (req, res, next) => {
     const posts = await Post.find();
 
     res.status(200).json({ success: true, data: posts });
-});
+    
+    Promise.resolve((req, res, next)).catch(next);
+};

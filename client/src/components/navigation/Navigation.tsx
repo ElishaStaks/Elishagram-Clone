@@ -8,6 +8,7 @@ import ModalContent from "./ModalContent";
 import { NavWrapper } from "../../styles/Navigation";
 import PostIcon from "../iconComponents/post";
 import customToast from "../../util/customToast";
+import noPost from '../../assets/noPost.png';
 
 /**
  * Navigation component which allows the user to access their profile, logout and navigate to the newsfeed
@@ -40,7 +41,7 @@ const Navigation: React.FC = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/createpost"><PostIcon fill="white" /></Link>
+                        <Link to="/createpost"><img src={noPost} alt="image" style={{width: '25px'}}/></Link>
                     </li>
                     <li>
                         {showModal && (

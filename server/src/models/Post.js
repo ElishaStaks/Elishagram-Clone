@@ -6,24 +6,23 @@ const PostSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  caption: {
-    type: String,
-    required: [true, "Please enter the caption"],
-    trim: true,
-  },
   likes: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
   likesCount: {
     type: Number,
     default: 0,
   },
+  caption: {
+    type: String,
+    required: [true, "Please enter the caption"],
+    trim: true,
+  },
+  files: {
+    type: [String],
+  },
   comments: [{ type: mongoose.Schema.ObjectId, ref: "Comment" }],
   commentsCount: {
     type: Number,
     default: 0,
-  },
-  files: {
-    type: [String],
-    validate: (v) => v === null || v.length > 0,
   },
   createdAt: {
     type: Date,

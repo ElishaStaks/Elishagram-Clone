@@ -24,7 +24,7 @@ const Signin: React.FC<SigninProps> = props => {
     }
 
     const userClient = async () => {
-        const response = await fetch("/me", {
+        const response = await fetch("/user", {
             method: "GET",
             headers: {
                 "Content-Type":"application/json",

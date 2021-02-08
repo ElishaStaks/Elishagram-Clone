@@ -1,8 +1,7 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
-const asyncHandler = require("../middlewares/asyncHandler");
 
-exports.follow = asyncHandler(async (req, res, next) => {
+exports.follow = async (req, res, next) => {
     // check if user exists by its id
     const user = await User.findById(req.params.id);
 
@@ -38,9 +37,10 @@ exports.follow = asyncHandler(async (req, res, next) => {
     });
 
     res.status(200).json({ success: true, data: {} });
-});
+    Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.unfollow = asyncHandler(async (req, res, next) => {
+exports.unfollow = async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
   if (!user) {
@@ -65,9 +65,10 @@ exports.unfollow = asyncHandler(async (req, res, next) => {
   });
 
   res.status(200).json({ success: true, data: {} });
-});
+  Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.editUserProfile = asyncHandler(async(req, res, next) => {
+exports.editUserProfile = async(req, res, next) => {
     const { fullname, username, email, bio, avatar} = req.body;
 
     const updateFields = {};
@@ -95,10 +96,12 @@ exports.editUserProfile = asyncHandler(async(req, res, next) => {
         new: true,
         isValid: true
     }).select("fullname username email bio avatar");
-    res.status(200).json({ success: true, data: user });
-});
 
-exports.newsfeed = asyncHandler(async (req, res, next) => {
+    res.status(200).json({ success: true, data: user });
+    Promise.resolve((req, res, next)).catch(next);
+};
+
+exports.newsfeed = async (req, res, next) => {
     // requests the user that you are following
     const following = req.user.following;
 
@@ -147,9 +150,10 @@ exports.newsfeed = asyncHandler(async (req, res, next) => {
     });
 
     res.status(200).json({ success: true, data: posts });
-});
+    Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.getUser = asyncHandler(async (req, res, next) => {
+exports.getUser = async (req, res, next) => {
   const user = await User.findOne({ username: req.params.username })
     .select("-password")
     .populate({ path: "posts", select: "files commentsCount likesCount" })
@@ -189,9 +193,11 @@ exports.getUser = asyncHandler(async (req, res, next) => {
   user.isMe = req.user.id === user._id.toString();
 
   res.status(200).json({ success: true, data: user });
-});
+  
+  Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.getUsers = asyncHandler(async (req, res, next) => {
+exports.getUsers = async (req, res, next) => {
   let users = await User.find().select("-password").lean().exec();
 
   users.forEach((user) => {
@@ -205,4 +211,6 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
   users = users.filter((user) => user._id.toString() !== req.user.id);
 
   res.status(200).json({ success: true, data: users });
-});
+  
+  Promise.resolve((req, res, next)).catch(next);
+};

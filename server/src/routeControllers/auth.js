@@ -1,7 +1,6 @@
 const User = require("../models/User");
-const asyncHandler = require("../middlewares/asyncHandler");
 
-exports.signin = asyncHandler(async (req, res, next) => {
+exports.signin = async (req, res, next) => {
     const { email, password } = req.body;
 
     // Make sure the email and password is not empty
@@ -36,9 +35,11 @@ exports.signin = asyncHandler(async (req, res, next) => {
 
     // then send json web token as response
     res.status(200).json({ success: true, token });
-});
+    
+    Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.signup = asyncHandler(async (req, res, next) => {
+exports.signup = async (req, res, next) => {
     // all details needed for the user to sign up
     const { fullname, username, email, password } = req.body;
     
@@ -48,15 +49,13 @@ exports.signup = asyncHandler(async (req, res, next) => {
     const token = user.getJwtToken();
 
     res.status(200).json({ success: true, token });
-});
+    
+    Promise.resolve((req, res, next)).catch(next);
+};
 
-exports.me = asyncHandler(async (req, res, next) => {
-  const { avatar, username, fullname, email, _id, bio } = req.user;
+exports.user = async (req, res, next) => {
+    const { avatar, username, fullname, email, _id, bio } = req.user;
 
-  res
-    .status(200)
-    .json({
-      success: true,
-      data: { avatar, username, fullname, email, _id, bio },
-    });
-});
+    res.status(200).json({success: true, data: { avatar, username, fullname, email, _id, bio }});
+    Promise.resolve((req, res, next)).catch(next);
+};
