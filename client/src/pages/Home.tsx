@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import LoadSpinner from "../components/LoadSpinner";
 import Post from "../components/post/Post";
-import Suggestions from "../components/Suggestions";
+import InitialSuggestions from "../components/InitialSuggestions";
 import { UserCard } from "../components/UserCard";
 import { useNewsFeedContext } from "../contexts/NewsFeed/NewsFeedContext";
 import { useUserContext } from "../contexts/User/UserContext";
@@ -47,7 +47,7 @@ const Home: React.FC = () => {
                     <UserCard user={user} />
                 </>
             ) : (
-                <Suggestions />
+                <InitialSuggestions />
             )}
         </HomeWrapper>
     );

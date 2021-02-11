@@ -2,8 +2,6 @@ import React from "react";
 import { PostPreviewWrapper } from "../../styles/Profile";
 import CommentIcon from "../iconComponents/comment";
 import FilledHeartIcon from "../iconComponents/filledHeart";
-import HeartIcon from "../iconComponents/heart";
-
 const PostPreview: React.FC<any> = ({ posts }) => {
 
   return (

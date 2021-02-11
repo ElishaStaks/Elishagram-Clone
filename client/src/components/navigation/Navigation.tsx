@@ -6,10 +6,9 @@ import navlogo from '../../assets/navlogo.png';
 import NavigationModal from "./NavigationModal";
 import ModalContent from "./ModalContent";
 import { NavWrapper } from "../../styles/Navigation";
-import PostIcon from "../iconComponents/post";
 import customToast from "../../util/customToast";
 import noPost from '../../assets/noPost.png';
-
+import user_suggestion_icon from "../../assets/user_suggestion_icon.png";
 /**
  * Navigation component which allows the user to access their profile, logout and navigate to the newsfeed
  */
@@ -41,7 +40,12 @@ const Navigation: React.FC = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/createpost"><img src={noPost} alt="image" style={{width: '25px'}}/></Link>
+                        <Link to="/usersuggestions">
+                            <img src={user_suggestion_icon} alt="default" style={{width: '25px'}}/>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/createpost"><img src={noPost} alt="default" style={{width: '25px'}}/></Link>
                     </li>
                     <li>
                         {showModal && (

@@ -59,8 +59,8 @@ interface UserProps {
     fullname: string;
 }
 
-const Suggestions = () => {
-  const [users, setUsers] = useState<any[]>([]);
+const InitialSuggestions = () => {
+  const [users, setUsers] = useState<UserProps[]>([]);
   const [loading, setLoading] = useState(true);
   const history = useHistory();
 
@@ -122,4 +122,4 @@ const Suggestions = () => {
   );
 };
 
-export default Suggestions;
+export default InitialSuggestions;
