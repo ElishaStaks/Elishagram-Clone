@@ -7,7 +7,7 @@ This repository will continue under development and I will continue to add more 
 
 ## Features
 * Custom post feed based on who you follow
-* Post photos of any file type
+* Post photos
 * Delete Posts
 * Like posts  
 * Comment on posts
