@@ -18,7 +18,7 @@ const Home: React.FC = () => {
             headers: {
                 "Authorization":"Bearer " + localStorage.getItem("token")
             }
-        }).then(async (res) => {
+        }).then(async (res: Response) => {
             const data = await res.json();
 
             if (res.ok) {

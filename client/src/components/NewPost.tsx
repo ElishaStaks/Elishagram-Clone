@@ -66,7 +66,7 @@ const NewPost: React.FC = () => {
             body : JSON.stringify(
                 newPost
             )
-        }).then(async (res) => {
+        }).then(async (res: Response) => {
             const data = await res.json();
 
             if (res.ok) {

@@ -27,6 +27,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
    * Handles adding comments to posts which accepts keyboard event to see when user is typing
    */
   const handleAddComment = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Enter key code
     if (event.keyCode === 13) {
       // prevents default action when submitting comment to the post
       event.preventDefault();
@@ -41,7 +42,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
           body: JSON.stringify({
               text: comment
           })
-      }).then(async (res) => {
+      }).then(async (res: Response) => {
             const data = await res.json();
 
             if (res.ok) {

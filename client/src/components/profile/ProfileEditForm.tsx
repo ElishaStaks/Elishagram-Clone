@@ -69,10 +69,10 @@ const ProfileEditForm: React.FC = () => {
           "Authorization":"Bearer " + localStorage.getItem("token")
       },
       body: JSON.stringify(body)
-    }).then(async (response) => {
-      const data = await response.json();
+    }).then(async (res: Response) => {
+      const data = await res.json();
             
-      if (response.ok) {
+      if (res.ok) {
           return data;
       } else {
           return Promise.reject(data);

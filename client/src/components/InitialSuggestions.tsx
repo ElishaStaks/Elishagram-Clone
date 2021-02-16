@@ -71,7 +71,7 @@ const InitialSuggestions = () => {
                 "Content-Type":"application/json",
                 "Authorization":"Bearer " + localStorage.getItem("token")
           }
-      }).then(async (res) => {
+      }).then(async (res: Response) => {
             const data = await res.json();
             if (res.ok) {
                 return data;

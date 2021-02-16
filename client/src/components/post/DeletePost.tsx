@@ -32,7 +32,7 @@ const DeletePost: React.FC<DeletePostProps> = ({ postId, closeModal, goToHome })
             headers: {
                 "Authorization":"Bearer " + localStorage.getItem("token")
             }
-        }).then(async (res) => {
+        }).then(async (res: Response) => {
             const data = await res.json(); 
 
             // checks if the response went through
