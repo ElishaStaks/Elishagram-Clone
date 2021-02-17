@@ -123,7 +123,7 @@ const NewPost: React.FC = () => {
                             <h2> Create Post</h2>
                         </div>
                     </div>
-                    <hr style={{ border: '0.5px solid #DBDBDB'}} />
+                    <hr style={{ border: '0.5px solid rgb(219 219 219 / .2)'}} />
                     <div className="modal-content">
                         <div className="newpost-caption">
                             <textarea
