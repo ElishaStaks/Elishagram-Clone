@@ -2,22 +2,32 @@ import styled from "styled-components";
 
 const NewPostWrapper = styled("div")`
 
-  .newpost-header {
+  .newpost-caption {
     display: flex;
     justify-content: space-between;
     padding: 0.5rem 1rem;
   }
 
-  .newpost-header h3:first-child {
-    color: #ED4956;
+  .newpost-header {
+    text-align: center;
+    padding: 8px; 
+    position: relative;
   }
 
-  h3 {
+  .createpost-text {
+    display: inline-block;
+    padding: 2px;
+  }
+
+  .cancel {
+    position: absolute;
+    padding: 2px;
+    margin: 6px;
     cursor: pointer;
   }
 
-  .newpost-header h3:last-child {
-    color: #0095F6;
+  .newpost-header span:first-child {
+    color: #ED4956;
   }
 
   textarea {

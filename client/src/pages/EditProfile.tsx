@@ -30,6 +30,7 @@ const Wrapper = styled("div")`
     width: 99%;
   }
 `;
+
 const EditProfile: React.FC = () => {
     return (
         <Wrapper>

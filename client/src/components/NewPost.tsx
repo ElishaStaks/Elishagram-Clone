@@ -1,9 +1,23 @@
 import { useState } from "react";
+import styled from "styled-components";
 import { useNewsFeedContext } from "../contexts/NewsFeed/NewsFeedContext";
 import CreatePostWrapper from "../styles/CreatePost";
 import NewPostWrapper from "../styles/NewPostWrapper";
 import customToast from "../util/customToast";
 import PostModal from "./post/PostModal";
+
+export const PostButton = styled("button")`
+    background-color: #0095f6;
+    border: 1px solid #0095f6;
+    background-color: #0095F6;
+    color: #000;
+    padding: 0.4rem .5rem;
+    border-radius: 4px;
+    font-family: "Fira Sans", sans-serif;
+    font-size: 1.3rem;
+    color: white;
+    width: inherit;
+`;
 
 const NewPost: React.FC = () => {
     const { newsFeed, setNewsFeed } = useNewsFeedContext();
@@ -89,7 +103,7 @@ const NewPost: React.FC = () => {
         <NewPostWrapper>
             <CreatePostWrapper>
                 <label className="form-container" htmlFor="upload-post">
-                    Create Post
+                    Photo
                 </label>
             </CreatePostWrapper>
             <input
@@ -101,22 +115,28 @@ const NewPost: React.FC = () => {
             />
             {showModal && (
                 <PostModal>
+                    <div className="newpost-header">
+                        <div className="cancel">
+                            <span onClick={() => setShowModal(false)}>Cancel</span>
+                        </div>
+                        <div className="createpost-text">
+                            <h2> Create Post</h2>
+                        </div>
+                    </div>
+                    <hr style={{ border: '0.5px solid #DBDBDB'}} />
                     <div className="modal-content">
-                        <div className="newpost-header">
-                            <h3 onClick={() => setShowModal(false)}>Cancel</h3>
-                            <h3 onClick={uploadPost}>Upload</h3>
+                        <div className="newpost-caption">
+                            <textarea
+                            placeholder="Whats on your mind?"
+                            value={caption}
+                            onChange={(event: any) => setCaption(event.target.value)}
+                            />
                         </div>
                         {preview && (
                         <img className="post-preview" src={preview} alt="preview" />
                         )}
                     </div>
-                    <div>
-                        <textarea
-                            placeholder="Add a caption"
-                            value={caption}
-                            onChange={(event: any) => setCaption(event.target.value)}
-                        />
-                    </div>
+                    <PostButton onClick={uploadPost}>Post</PostButton>
                 </PostModal>
             )}
         </NewPostWrapper>

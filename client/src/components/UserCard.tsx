@@ -20,9 +20,9 @@ const UserCardWrapper = styled.div`
 
 interface UserCardProps {
     user: {
-        username: string;
-        avatar: string;
-        fullname: string;
+      username: string;
+      avatar: string;
+      fullname: string;
     }
 }
 
