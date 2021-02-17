@@ -25,7 +25,7 @@ This repository will continue under development and I will continue to add more 
  <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1613010259/profile_page_vwytwl.png">
  <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1613010258/suggestions_page_y565of.png">
  <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1613010258/edit_user_page_ilwt10.png">
- <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1613010259/upload_page_tpqcpz.png">
+ <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1613537362/Capture_ldgx4v.png">
  <img src="https://res.cloudinary.com/insta-image-cloud/image/upload/v1613010258/other_user_profile_page_lcxerq.png">
 </p>
 
