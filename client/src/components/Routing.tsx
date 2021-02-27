@@ -1,7 +1,6 @@
 import React from "react";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import CreatePost from "../pages/CreatePost";
-
 import EditProfile from "../pages/EditProfile";
 import Home from "../pages/Home";
 import Profile from "../pages/Profile";

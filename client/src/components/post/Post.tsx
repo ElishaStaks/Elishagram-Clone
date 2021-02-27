@@ -10,6 +10,15 @@ import Comment from './comment/Comment';
 import { PostProps } from "../../Interfaces";
 import MoreIcon from "../iconComponents/dots";
 
+interface NewCommentsProps {
+  _id: string;
+  user: { 
+    username: string;
+    avatar: string;
+  }; 
+  text: string; 
+}
+
 const Post: React.FC<PostProps> = ({ post }) => {
   const [comment, setComment] = useState(""); // comment state which has a default value of nothing
   const history = useHistory(); // redirect 
@@ -17,7 +26,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
   const [showModal, setShowModal] = useState(false); // state which allows for visible and hidden modal upon button press
   const closeModal = () => setShowModal(false); // closes modal upon button press
 
-  const [newComments, setNewComments] = useState<string[]>([]);
+  const [newComments, setNewComments] = useState<NewCommentsProps[]>([]);
   const [likesState, setLikes] = useState(post.likesCount);
 
   const increaseLikes = () => setLikes(likesState + 1); // adds one like to the post
@@ -120,7 +129,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
             <Comment key={comment._id} comment={comment} />
         ))}
 
-        {newComments.map((comment: any) => (
+        {newComments.map((comment) => (
           <Comment key={comment._id} comment={comment} />
         ))}
       </div>
@@ -129,7 +138,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
         <textarea
           placeholder="Add a Comment..."
           value={comment}
-          onChange={(event: any) => setComment(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => setComment(event.target.value)}
           onKeyDown={handleAddComment}
         ></textarea>
       </div>

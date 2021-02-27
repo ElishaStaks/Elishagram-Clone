@@ -5,7 +5,7 @@ import Avatar from "../styles/Avatar";
 import Follow from "./Follow";
 import LoadSpinner from "./LoadSpinner";
 
-const Wrapper = styled.div`
+const Wrapper = styled("div")`
   background: #242526;
   border: 1px solid #3f3f40;
   width: 600px;
@@ -51,7 +51,7 @@ const Wrapper = styled.div`
   }
 `;
 
-interface UserProps {
+interface UserSuggestionProps {
     _id: string;
     username: string;
     avatar: string;
@@ -60,7 +60,7 @@ interface UserProps {
 }
 
 const InitialSuggestions = () => {
-  const [users, setUsers] = useState<UserProps[]>([]);
+  const [users, setUsers] = useState<UserSuggestionProps[]>([]);
   const [loading, setLoading] = useState(true);
   const history = useHistory();
 
@@ -85,7 +85,7 @@ const InitialSuggestions = () => {
           console.log(JSON.stringify(error));
       })
       
-  }, []);
+  }, [users]);
 
   if (loading) {
     return <LoadSpinner />;
@@ -95,7 +95,7 @@ const InitialSuggestions = () => {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <h3 style={{ marginBottom: "0.7rem" }}>Suggestions for you</h3>
       <Wrapper>
-        {users.map((user: UserProps) => (
+        {users.map((user: UserSuggestionProps) => (
           <div key={user._id} className="suggestion">
             <div className="user-info">
               <Avatar

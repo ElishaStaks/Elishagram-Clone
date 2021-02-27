@@ -10,7 +10,7 @@ interface DeletePostProps {
 }
 
 const DeletePost: React.FC<DeletePostProps> = ({ postId, closeModal, goToHome }) => {
-    const { newsFeed, setNewsFeed } = useNewsFeedContext();
+    const { newsfeed, setNewsfeed } = useNewsFeedContext();
     const history = useHistory();
 
     const handleDeletePost = () => {
@@ -23,7 +23,7 @@ const DeletePost: React.FC<DeletePostProps> = ({ postId, closeModal, goToHome })
         }
 
         // delete the post from the newsfeed context
-        setNewsFeed(newsFeed.filter((post: {_id: string}) => post._id !== postId));
+        setNewsfeed(newsfeed.filter((post: {_id: string}) => post._id !== postId));
         customToast("Your post has been deleted successfully");
 
         // fetch request to thhe server to delete the post with the correct post id

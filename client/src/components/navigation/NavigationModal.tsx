@@ -1,7 +1,7 @@
 import React from "react";
 import { NavModalWrapper } from "../../styles/Navigation";
 
-const NavigationModal = ({ children }: any) => {
+const NavigationModal: React.FC = ({ children }) => {
   return (
     <NavModalWrapper>
       <div className="modal-content">{children}</div>

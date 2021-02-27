@@ -20,7 +20,7 @@ export const PostButton = styled("button")`
 `;
 
 const NewPost: React.FC = () => {
-    const { newsFeed, setNewsFeed } = useNewsFeedContext();
+    const { newsfeed, setNewsfeed } = useNewsFeedContext();
     const [showModal, setShowModal] = useState(false);
     const [caption, setCaption] = useState("");
     const [preview, setPreview] = useState(""); // preview of the image you want to upload
@@ -57,7 +57,7 @@ const NewPost: React.FC = () => {
         }
     };
 
-    const uploadPost = (event: any) => {
+    const uploadPost = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         if (!caption) {
             return customToast("Please add a caption");
         }
@@ -93,7 +93,7 @@ const NewPost: React.FC = () => {
             const post = response.data;
             post.isLiked = false;
             post.isMine = true;
-            setNewsFeed([post, ...newsFeed]); // adds post to the newsfeed
+            setNewsfeed([post, ...newsfeed]); // adds post to the newsfeed
             window.scrollTo(0, 0);
             customToast("Your post has been uploaded successfully");
         });

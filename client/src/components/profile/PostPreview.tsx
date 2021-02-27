@@ -2,11 +2,21 @@ import React from "react";
 import { PostPreviewWrapper } from "../../styles/Profile";
 import CommentIcon from "../iconComponents/comment";
 import FilledHeartIcon from "../iconComponents/filledHeart";
-const PostPreview: React.FC<any> = ({ posts }) => {
+
+interface PostPreviewProps {
+  posts: [{
+    _id: string;
+    files: [string];
+    likesCount: number;
+    commentsCount: number;
+  }]
+}
+
+const PostPreview: React.FC<PostPreviewProps> = ({ posts }) => {
 
   return (
     <PostPreviewWrapper>
-      {posts?.map((post: any) => (
+      {posts?.map((post) => (
         <div
           key={post._id}
           className="container-overlay"

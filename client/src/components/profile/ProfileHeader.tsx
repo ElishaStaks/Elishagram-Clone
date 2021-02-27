@@ -3,7 +3,21 @@ import {  useHistory } from "react-router-dom";
 import { ProfileHeaderWrapper } from "../../styles/Profile";
 import Follow from "../Follow";
 
-const ProfileHeader: React.FC<any> = ({ profile }) => {
+interface ProfileProps {
+  profile: {
+    followersCount: number;
+    avatar: string;
+    username: string;
+    isMe: boolean;
+    isFollowing: boolean;
+    _id: string;
+    postCount: number;
+    followingCount: number;
+    bio: string;
+  }
+}
+
+const ProfileHeader: React.FC<ProfileProps> = ({ profile }) => {
   const history = useHistory();
   const [followersState, setFollowers] = useState(0); // default follow state is 0
   const increaseFollowers = () => setFollowers(followersState + 1); // add followers

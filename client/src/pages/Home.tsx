@@ -9,7 +9,7 @@ import HomeWrapper from "../styles/HomeWrapper";
 
 const Home: React.FC = () => {
     const { user, setUser } = useUserContext();
-    const { newsFeed, setNewsFeed } = useNewsFeedContext();
+    const { newsfeed, setNewsfeed } = useNewsFeedContext();
     const [load, setLoad] = useState(true);
 
     useEffect(() => {
@@ -27,11 +27,11 @@ const Home: React.FC = () => {
                 return Promise.reject(data);
             }
         }).then((response) => {
-            setNewsFeed(response.data);
+            setNewsfeed(response.data);
             setLoad(false);
         }).catch(error => console.log(JSON.stringify(error)));
 
-    }, [setUser, setNewsFeed]);
+    }, [setUser, setNewsfeed]);
 
     if (load){
         return <LoadSpinner />
@@ -39,10 +39,10 @@ const Home: React.FC = () => {
 
     return (
         <HomeWrapper>
-            {newsFeed.length > 0 ? (
+            {newsfeed.length > 0 ? (
                 <>
                     <div className="home">
-                        {newsFeed.map((post: any) => (<Post key={post._id} post={post} />))}
+                        {newsfeed.map((post: any) => (<Post key={post._id} post={post} />))}
                     </div>
                     <UserCard user={user} />
                 </>

@@ -25,7 +25,6 @@ interface UserCardProps {
       fullname: string;
     }
 }
-
 export const UserCard: React.FC<UserCardProps> = ({ user }) => {
   const history = useHistory();
 

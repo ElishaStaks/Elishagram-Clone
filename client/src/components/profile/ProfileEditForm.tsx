@@ -26,12 +26,12 @@ const ProfileEditForm: React.FC = () => {
         data.append("cloud_name", "insta-image-cloud");
 
         return fetch("https://api.cloudinary.com/v1_1/insta-image-cloud/image/upload", {
-            method: "POST",
-            body: data
-        }).then((response) => response.json());
+        method: "POST",
+        body: data
+    }).then((response) => response.json());
   }
 
-  const onFileSelect = (event: any) => {
+  const onFileSelect = (event: any ) => {
         if (event.target.files[0]) {
             uploadImage(event.target.files[0]).then((response) => {
                 setNewAvatar(response.secure_url);
@@ -39,7 +39,7 @@ const ProfileEditForm: React.FC = () => {
         }
   };
 
-  const editProfile = (event: any) => {
+  const editProfile = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!fullname) {

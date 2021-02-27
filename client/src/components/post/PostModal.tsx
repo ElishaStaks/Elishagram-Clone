@@ -1,6 +1,6 @@
 import React from "react";
 import { PostModalWrapper } from "../../styles/Post";
-const PostModal = ({ children }: any) => {
+const PostModal: React.FC = ({ children }) => {
   return (
     <PostModalWrapper>
       <div className="modal-content">{children}</div>
