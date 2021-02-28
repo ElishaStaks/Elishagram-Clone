@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, {  useEffect, useState, useCallback } from "react";
 import {  useHistory } from "react-router-dom";
 import { ProfileHeaderWrapper } from "../../styles/Profile";
 import Follow from "../Follow";
@@ -20,8 +20,9 @@ interface ProfileProps {
 const ProfileHeader: React.FC<ProfileProps> = ({ profile }) => {
   const history = useHistory();
   const [followersState, setFollowers] = useState(0); // default follow state is 0
-  const increaseFollowers = () => setFollowers(followersState + 1); // add followers
-  const decreaseFollowers = () => setFollowers(followersState - 1); // remove followers
+  
+  const increaseFollowers = useCallback(() => setFollowers(followersState + 1), [followersState]); // add followers
+  const decreaseFollowers = useCallback(() => setFollowers(followersState - 1), [followersState]); // remove followers
 
   useEffect(() => setFollowers(profile?.followersCount), [profile]); // set followers after rendering component
 

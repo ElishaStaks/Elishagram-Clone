@@ -3,7 +3,16 @@ export interface PostProps {
     likesCount: number;
     isLiked: boolean;
     commentsCount: number;
-    comments: [object]
+    comments: [
+      {
+        _id: string,
+        user: {
+          username: string;
+          avatar: string;
+        },
+        text: string
+      }
+    ]
     files: [string];
     caption: string;
     isMine: boolean;

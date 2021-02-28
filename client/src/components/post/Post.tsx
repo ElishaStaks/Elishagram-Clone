@@ -125,7 +125,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
           {post.caption}
         </p>
 
-        {post.comments?.slice(0, 2).map((comment: any) => (
+        {post.comments?.slice(0, 2).map((comment) => (
             <Comment key={comment._id} comment={comment} />
         ))}
 

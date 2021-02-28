@@ -42,7 +42,7 @@ const Home: React.FC = () => {
             {newsfeed.length > 0 ? (
                 <>
                     <div className="home">
-                        {newsfeed.map((post: any) => (<Post key={post._id} post={post} />))}
+                        {newsfeed.map((post) => (<Post key={post._id} post={post} />))}
                     </div>
                     <UserCard user={user} />
                 </>

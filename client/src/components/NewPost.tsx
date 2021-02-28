@@ -129,7 +129,7 @@ const NewPost: React.FC = () => {
                             <textarea
                             placeholder="Whats on your mind?"
                             value={caption}
-                            onChange={(event: any) => setCaption(event.target.value)}
+                            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => setCaption(event.target.value)}
                             />
                         </div>
                         {preview && (

@@ -95,7 +95,7 @@ const InitialSuggestions = () => {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <h3 style={{ marginBottom: "0.7rem" }}>Suggestions for you</h3>
       <Wrapper>
-        {users.map((user: UserSuggestionProps) => (
+        {users.map((user) => (
           <div key={user._id} className="suggestion">
             <div className="user-info">
               <Avatar
