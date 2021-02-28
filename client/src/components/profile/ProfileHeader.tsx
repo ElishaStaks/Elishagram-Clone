@@ -3,6 +3,8 @@ import {  useHistory } from "react-router-dom";
 import { ProfileHeaderWrapper } from "../../styles/Profile";
 import Follow from "../Follow";
 
+//kjwefwgefwewef
+
 interface ProfileProps {
   profile: {
     followersCount: number;
