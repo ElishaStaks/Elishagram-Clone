@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Button } from '@material-ui/core';
 
-export const Button = styled("button")`
+export const Wrapper = styled("div")`
+  .button {
     background-color: #0095f6;
     border: 1px solid #0095f6;
     background-color: #0095F6;
     color: #000;
-    padding: 0.4rem .5rem;
     border-radius: 4px;
     margin-top: 1rem;
     margin-left: 1rem;
     font-family: "Fira Sans", sans-serif;
     font-size: 1rem;
     color: white;
+  }
 `;
 
 interface FollowProps {
@@ -34,7 +36,7 @@ const Follow: React.FC<FollowProps> = ({ hasButton, isFollowing, increaseFollowe
       if (decreaseFollowers){
         decreaseFollowers();
       }
-
+      
       fetch(`/${userId}/unfollow`, {
         method: "GET",
         headers: {
@@ -75,31 +77,35 @@ const Follow: React.FC<FollowProps> = ({ hasButton, isFollowing, increaseFollowe
 
   if (followingState) {
     return (
-      <>
+      <Wrapper>
         {hasButton ? (
           <span
-            style={{ color: "#262626" }}
-            className="pointer"
-            onClick={() => handleFollow()}
+          style={{ color: "#262626" }}
+          className="pointer"
+          onClick={() => handleFollow()}
           >
             Following
           </span>
         ) : (
-          <Button onClick={() => handleFollow()}>Following</Button>
+          <div className="button">
+            <Button onClick={() => handleFollow()}>Following</Button>
+          </div>
         )}
-      </>
+      </Wrapper>
     );
   } else {
     return (
-      <>
+      <Wrapper>
         {hasButton ? (
           <span className="pointer" onClick={() => handleFollow()}>
             Follow
           </span>
         ) : (
-          <Button onClick={() => handleFollow()}>Follow</Button>
+          <div className="button">
+            <Button  onClick={() => handleFollow()}>Follow</Button>
+          </div>
         )}
-      </>
+      </Wrapper>
     );
   }
 };

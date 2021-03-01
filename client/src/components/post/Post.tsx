@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { PostWrapper } from '../../styles/Post';
 import ModalContent from './ModalContent';
@@ -24,13 +24,13 @@ const Post: React.FC<PostProps> = ({ post }) => {
   const history = useHistory(); // redirect 
 
   const [showModal, setShowModal] = useState(false); // state which allows for visible and hidden modal upon button press
-  const closeModal = () => setShowModal(false); // closes modal upon button press
+  const closeModal = useCallback(() => setShowModal(false), []); // closes modal upon button press
 
   const [newComments, setNewComments] = useState<NewCommentsProps[]>([]);
   const [likesState, setLikes] = useState(post.likesCount);
 
-  const increaseLikes = () => setLikes(likesState + 1); // adds one like to the post
-  const decreaseLikes = () => setLikes(likesState - 1);// removes one like to from the post
+  const increaseLikes = useCallback(() => setLikes(likesState + 1), [likesState]); // adds one like to the post
+  const decreaseLikes = useCallback(() => setLikes(likesState - 1), [likesState]);// removes one like to from the post
 
   /**
    * Handles adding comments to posts which accepts keyboard event to see when user is typing

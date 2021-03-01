@@ -41,19 +41,26 @@ const NewPost: React.FC = () => {
         }).then((response) => response.json());
     }
 
-    const onFileSelect = (event: any) => {
-        if (event.target.files[0]) {
+    const onFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const input = event.target as HTMLInputElement;
+
+        if (!input.files?.length) {
+            return;
+        }
+
+        if (input.files[0]) {
             const fileReader = new FileReader();
 
-            fileReader.onload = (event: any) => {
-                setPreview(event.target.result);
+            fileReader.onload = () => {
+                setPreview(fileReader.result as string);
                 setShowModal(true);
             }
-            fileReader.readAsDataURL(event.target.files[0]); // reads the contents of the image uploaded
-        
-            uploadImage(event.target.files[0]).then((response) => {
-                setPostImage(response.secure_url);
-            });
+            fileReader.readAsDataURL(input.files[0]); // reads the contents of the image uploaded
+
+
+            // uploadImage().then((response)=> {
+            //     setPostImage(response.secure_url);
+            // });
         }
     };
 
@@ -102,7 +109,7 @@ const NewPost: React.FC = () => {
     return (
         <NewPostWrapper>
             <CreatePostWrapper>
-                <label className="form-container" htmlFor="upload-post">
+                <label className="form-container" htmlFor="upload-post" >
                     Photo
                 </label>
             </CreatePostWrapper>

@@ -5,6 +5,6 @@ const customToast = (message: string) => {
         draggable: true,
         position: toast.POSITION.TOP_RIGHT
     });
-    }
+}
 
 export default customToast;

@@ -2,8 +2,7 @@ import React, {  useEffect, useState, useCallback } from "react";
 import {  useHistory } from "react-router-dom";
 import { ProfileHeaderWrapper } from "../../styles/Profile";
 import Follow from "../Follow";
-
-//kjwefwgefwewef
+import { Button } from '@material-ui/core';
 
 interface ProfileProps {
   profile: {
@@ -37,9 +36,9 @@ const ProfileHeader: React.FC<ProfileProps> = ({ profile }) => {
             <h2>{profile?.username}</h2>
             {profile?.isMe ? (
               <div className="options">
-                <button className="profile-button" onClick={() => history.push(`/${profile?.username}/edit`)}>
+                <Button className="profile-button" onClick={() => history.push(`/${profile?.username}/edit`)}>
                   <strong>Edit Profile</strong>
-                </button>
+                </Button>
               </div>
             ) : (
               <Follow

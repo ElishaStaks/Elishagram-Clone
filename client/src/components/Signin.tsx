@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useUserContext } from "../contexts/User/UserContext";
 import FormWrapper from "../styles/Form";
 import logo  from '../assets/logo.png'
@@ -23,7 +23,7 @@ const Signin: React.FC<SigninProps> = props => {
         password: password
     }
 
-    const userClient = async () => {
+    const userClient =  useCallback(async () => {
         const response = await fetch("/user", {
             method: "GET",
             headers: {
@@ -37,13 +37,15 @@ const Signin: React.FC<SigninProps> = props => {
                 return data;
             } else {
                 return Promise.reject(data);
+                
             }
         });
 
         setUser(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
-    }
-    const handleSignin = async (creds: SigninCredentials) => {
+    }, [setUser]);
+
+    const handleSignin = useCallback( async (creds: SigninCredentials) => {
         // if the user hasn't added all the correct information
         if (!email || !password) {
             // return a toast to the user
@@ -80,11 +82,13 @@ const Signin: React.FC<SigninProps> = props => {
         }
 
         userClient();
+        
         customToast("Sign in successful");
 
         setEmail("");
         setPassword("");
-    }
+    }, [userClient, email, password]);
+
     return (
         <FormWrapper onSubmit={(event) => {event.preventDefault(); handleSignin(signinCreds)}}>
             <img src={logo} alt="logo" />
@@ -93,14 +97,14 @@ const Signin: React.FC<SigninProps> = props => {
                     type="email" 
                     placeholder="email" 
                     value={email} 
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
                 />
 
                 <input 
                     type="password" 
                     placeholder="password" 
                     value={password} 
-                    onChange={(event) => setPassword(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
                 />
 
                 <input type="submit" value="Sign in" className="signin-btn" />

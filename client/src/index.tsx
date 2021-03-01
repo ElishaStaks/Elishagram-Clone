@@ -8,15 +8,13 @@ import { UserProvider } from './contexts/User/UserContext';
 import { NewsFeedProvider } from './contexts/NewsFeed/NewsFeedContext';
 
 ReactDOM.render(
-  <React.StrictMode>
     <UserProvider>
       <NewsFeedProvider>
         <ThemeProvider>
           <App />
         </ThemeProvider>
       </NewsFeedProvider>
-    </UserProvider>
-  </React.StrictMode>,
+    </UserProvider>,
   document.getElementById('root')
 );
 

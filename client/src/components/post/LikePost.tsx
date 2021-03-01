@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import FilledHeartIcon from "../iconComponents/filledHeart";
 import HeartIcon from "../iconComponents/heart";
 
@@ -14,10 +14,12 @@ const LikePost: React.FC<LikePostProps> = ({ isLiked, postId, increaseLikes, dec
   // default value is set to false
   const [likedState, setLiked] = useState(isLiked);
 
+  const isLikedFunc = useCallback(() => setLiked(isLiked), [isLiked]);
+
   useEffect(() => {
     // set like state to true after render
-    setLiked(isLiked);
-  }, [isLiked]);
+    isLikedFunc();
+  }, [isLikedFunc]);
 
   /**
    * Handles what happens when the user likes a post

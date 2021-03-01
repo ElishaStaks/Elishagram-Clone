@@ -84,7 +84,6 @@ const InitialSuggestions = () => {
       }).catch(error => {
           console.log(JSON.stringify(error));
       })
-      
   }, [users]);
 
   if (loading) {

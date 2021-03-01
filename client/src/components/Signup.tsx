@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useUserContext } from "../contexts/User/UserContext";
 import FormWrapper from "../styles/Form";
 import logo  from '../assets/logo.png'
@@ -30,7 +30,7 @@ const Signup: React.FC<SignupProps> = props => {
         password: password
     }
 
-    const userClient = async () => {
+    const userClient = useCallback( async () => {
         const response = await fetch("/user", {
             method: "GET",
             headers: {
@@ -49,9 +49,9 @@ const Signup: React.FC<SignupProps> = props => {
 
         setUser(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
-    }
+    }, [setUser]);
 
-    const handleSignup = async (creds: SignupCredentials) => {
+    const handleSignup = useCallback(async (creds: SignupCredentials) => {
         // if the user hasn't added all the correct information
         if (!fullname || !username || !email || !password) {
             // return a toast to the user
@@ -96,7 +96,7 @@ const Signup: React.FC<SignupProps> = props => {
         setUsername("");
         setEmail("");
         setPassword("");
-    }
+    }, [userClient, fullname, username, email, password]);
 
     return (
         <FormWrapper onSubmit={(event) => {event.preventDefault(); handleSignup(signupCreds)}}>
@@ -106,28 +106,28 @@ const Signup: React.FC<SignupProps> = props => {
                     type="text" 
                     placeholder="Full Name" 
                     value={fullname} 
-                    onChange={(event) => setFullname(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFullname(event.target.value)}
                 />
 
                 <input 
                     type="text" 
                     placeholder="Username" 
                     value={username} 
-                    onChange={(event) => setUsername(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setUsername(event.target.value)}
                 />
 
                 <input 
                     type="email" 
                     placeholder="Email" 
                     value={email} 
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
                 />
 
                 <input 
                     type="password" 
                     placeholder="Password" 
                     value={password} 
-                    onChange={(event) => setPassword(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
                 />
 
                 <input type="submit" value="Sign up" className="signup-btn" />

@@ -8,12 +8,8 @@ export const ProfileHeaderWrapper = styled("div")`
   margin-left: 8rem;
 
   .profile-button {
-    background-color: #FFF;
-    color: #000;
     border: 1px solid #d3d3d3;
     padding: 0.4rem .5rem;
-    border-radius: 4px;
-    margin-top: 1rem;
     margin-left: 1rem;
     font-family: "Fira Sans", sans-serif;
     font-size: 1rem;
@@ -55,7 +51,7 @@ export const ProfileHeaderWrapper = styled("div")`
     margin-left: 1rem;
   }
 
-  span {
+  .profile-stats span {
     padding-right: 3rem;
   }
 
