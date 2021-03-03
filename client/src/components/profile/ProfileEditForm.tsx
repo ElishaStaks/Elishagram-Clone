@@ -10,13 +10,13 @@ const ProfileEditForm: React.FC = () => {
   const { user, setUser } = useUserContext();
 
   // All editable details the form will offer are in their own states as they will be changing
-  const [username, setUsername] = useState(user.username); 
+  const [username] = useState(user.username); 
   const [fullname, setFullname] = useState(user.fullname);
   const [bio, setBio] = useState(user.bio);
   const [email, setEmail] = useState(user.email);
   const [newAvatar, setNewAvatar] = useState("");
     
-  const uploadImage = (file: string) => {
+  const uploadImage = (file: File) => {
         const data = new FormData();
         // append file which we have from the image the user chooses
         data.append("file", file);
@@ -31,15 +31,21 @@ const ProfileEditForm: React.FC = () => {
     }).then((response) => response.json());
   }
 
-  const onFileSelect = (event: any ) => {
-        if (event.target.files[0]) {
-            uploadImage(event.target.files[0]).then((response) => {
-                setNewAvatar(response.secure_url);
-            });
-        }
+  const onFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files?.length) {
+      return;
+    }
+
+    if (input.files[0]) {
+        uploadImage(input.files[0]).then((response) => {
+        setNewAvatar(response.secure_url);
+      });
+    }
   };
 
-  const editProfile = (event: React.FormEvent<HTMLFormElement>) => {
+  const editProfile = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!fullname) {
@@ -62,26 +68,23 @@ const ProfileEditForm: React.FC = () => {
       avatar: newAvatar || user.avatar
     }
 
-    fetch(`/${username}`, {
-      method: "PUT",
-      headers: {
-          "Content-Type":"application/json",
-          "Authorization":"Bearer " + localStorage.getItem("token")
-      },
-      body: JSON.stringify(body)
-    }).then(async (res: Response) => {
-      const data = await res.json();
-            
-      if (res.ok) {
-          return data;
-      } else {
-          return Promise.reject(data);
-      }
-    }).then((response) => {
-        setUser(response.data);
-        localStorage.setItem("user", JSON.stringify(response.data));
-        history.push(`/${user.username || body.username}`);
-    }).catch((error) => customToast(error.message));
+    const path: string = `/${username}`;
+    const api: RequestInit = { method: "PUT", headers: {
+        "Content-Type":"application/json",
+        "Authorization":"Bearer " + localStorage.getItem("token")
+    }, body: JSON.stringify(body)}
+
+    try {
+      const response = await fetch(path, api);
+      const { data } = await response.json();
+
+      setUser(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      history.push(`/${user.username || body.username}`);
+    
+    } catch (error) {
+      return customToast(error.message);
+    }
   };
 
   return (
@@ -108,10 +111,10 @@ const ProfileEditForm: React.FC = () => {
                   <input type="text" value={fullname} onChange={(event) => setFullname(event.target.value)} />
               </div>
 
-              <div className="input-group">
+              {/* <div className="input-group">
                   <label><strong>Username</strong></label>
                   <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />
-              </div>
+              </div> */}
               <div className="input-group textarea-group">
                   <label><strong>Bio</strong></label>
                   <textarea cols={5} value={bio? bio : ""} onChange={(event) => setBio(event.target.value)}> </textarea>

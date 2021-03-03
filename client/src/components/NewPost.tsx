@@ -26,7 +26,7 @@ const NewPost: React.FC = () => {
     const [preview, setPreview] = useState(""); // preview of the image you want to upload
     const [postImage, setPostImage] = useState("");
 
-    const uploadImage = (file: string) => {
+    const uploadImage = (file: File) => {
         const data = new FormData();
         // append file which we have from the image the user chooses
         data.append("file", file);
@@ -57,14 +57,13 @@ const NewPost: React.FC = () => {
             }
             fileReader.readAsDataURL(input.files[0]); // reads the contents of the image uploaded
 
-
-            // uploadImage().then((response)=> {
-            //     setPostImage(response.secure_url);
-            // });
+            uploadImage(input.files[0]).then((response)=> {
+                setPostImage(response.secure_url);
+            });
         }
     };
 
-    const uploadPost = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const uploadPost = async () => {
         if (!caption) {
             return customToast("Please add a caption");
         }
@@ -78,32 +77,28 @@ const NewPost: React.FC = () => {
             files: [postImage]
         };
 
-        fetch(`/posts`, {
-            method: "POST",
-            headers: {
-                "Content-Type":"application/json",
-                "Authorization":"Bearer " + localStorage.getItem("token") // passes the unique token of that user
-            },
-            body : JSON.stringify(
-                newPost
-            )
-        }).then(async (res: Response) => {
-            const data = await res.json();
+        const path: string = "/posts";
+        const api: RequestInit = { method: "POST", headers: {
+            "Content-Type":"application/json",
+            "Authorization":"Bearer " + localStorage.getItem("token")
+        }, body: JSON.stringify(newPost)}
 
-            if (res.ok) {
-                return data;
-            } else {
-                return Promise.reject(data);
-            }
-        }).then((response) => {
-            // sets the default values to that post
-            const post = response.data;
+        try {
+            const response = await fetch(path, api);
+
+            const { data } = await response.json();
+
+            const post = data;
+
             post.isLiked = false;
             post.isMine = true;
             setNewsfeed([post, ...newsfeed]); // adds post to the newsfeed
             window.scrollTo(0, 0);
             customToast("Your post has been uploaded successfully");
-        });
+
+        } catch(error) {
+            return customToast(error.message);
+        }
     };
 
     return (

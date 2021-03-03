@@ -23,26 +23,23 @@ const Signin: React.FC<SigninProps> = props => {
         password: password
     }
 
-    const userClient =  useCallback(async () => {
-        const response = await fetch("/user", {
-            method: "GET",
-            headers: {
-                "Content-Type":"application/json",
-                "Authorization":"Bearer " + localStorage.getItem("token")
-            }
-        }).then(async (res: Response) => {
+    const fetchClient = useCallback( async () => {
+        const path: string = "/user";
+        const api: RequestInit = { method: "GET", headers: {
+            "Content-Type":"application/json",
+            "Authorization":"Bearer " + localStorage.getItem("token")
+        }}
 
-            const data = await res.json();
-            if (res.ok) {
-                return data;
-            } else {
-                return Promise.reject(data);
-                
-            }
-        });
+        try {
+            const response = await fetch(path, api);
 
-        setUser(response.data);
-        localStorage.setItem("user", JSON.stringify(response.data));
+            const { data } = await response.json();
+
+            setUser(data);
+            localStorage.setItem("user", JSON.stringify(data));
+        } catch(error) {
+            return customToast(error.message);
+        }
     }, [setUser]);
 
     const handleSignin = useCallback( async (creds: SigninCredentials) => {
@@ -56,38 +53,27 @@ const Signin: React.FC<SigninProps> = props => {
             email: creds.email,
             password: creds.password
         };
+        const path: string = "/signin";
+        const api: RequestInit = { method: "POST", headers: {
+            "Content-Type":"application/json",
+            "Authorization":"Bearer " + localStorage.getItem("token")
+        }, body: JSON.stringify(body)}
 
         try {
-             const { token } = await fetch("/signin", {
-                method: "POST",
-                headers: {
-                    "Content-Type":"application/json",
-                },
-                body: JSON.stringify(
-                    body
-                )
-            }).then(
-                async (res) => {
-                const data = await res.json();
+            const response =  await fetch(path, api);
 
-                if (res.ok) {
-                    return data;
-                } else {
-                    return Promise.reject(data);
-                }
-            })
+            const { token } = await response.json();
             localStorage.setItem("token", token);
+
         } catch(error) {
             return customToast(error.message);
         }
 
-        userClient();
-        
-        customToast("Sign in successful");
+        fetchClient();
 
         setEmail("");
         setPassword("");
-    }, [userClient, email, password]);
+    }, [fetchClient, email, password]);
 
     return (
         <FormWrapper onSubmit={(event) => {event.preventDefault(); handleSignin(signinCreds)}}>

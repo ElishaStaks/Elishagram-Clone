@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import customToast from "../../util/customToast";
 import FilledHeartIcon from "../iconComponents/filledHeart";
 import HeartIcon from "../iconComponents/heart";
 
@@ -24,47 +25,51 @@ const LikePost: React.FC<LikePostProps> = ({ isLiked, postId, increaseLikes, dec
   /**
    * Handles what happens when the user likes a post
    */
-  const handleToggleLike = () => {
+  const handleToggleLike = async () => {
     if (likedState) {
       setLiked(false);
       decreaseLikes();
 
-      // request correct api in server
-      fetch(`${postId}/like`, {
-        method: "GET",
-        headers: {
-            "Content-Type":"application/json",
-            "Authorization":"Bearer " + localStorage.getItem("token")
-        },
-      }).then(async (res: Response) => {
-            const data = await res.json();
+      const path: string = `/${postId}/like`;
+      const api: RequestInit = { method: "GET", headers: {
+          "Content-Type":"application/json",
+          "Authorization":"Bearer " + localStorage.getItem("token")
+      }}
 
-            if (res.ok) {
-                return data;
-            } else {
-                return Promise.reject(data);
-            }
-      });
+      try {
+          const response = await fetch(path, api);
 
+          const { data } = await response.json();
+
+          return data;
+
+      } catch(error) {
+          return customToast(error.message);
+      }
+
+      
     } else {
       setLiked(true);
       increaseLikes();
-      fetch(`${postId}/like`, {
-        method: "GET",
-        headers: {
-            "Content-Type":"application/json",
-            "Authorization":"Bearer " + localStorage.getItem("token")
-        },
-      }).then(async (res: Response) => {
-            const data = await res.json();
 
-            if (res.ok) {
-                return data;
-            } else {
-                return Promise.reject(data);
-            }
-        });
+      const path: string = `/${postId}/like`;
+      const api: RequestInit = { method: "GET", headers: {
+          "Content-Type":"application/json",
+          "Authorization":"Bearer " + localStorage.getItem("token")
+      }}
+
+      try {
+          const response = await fetch(path, api);
+
+          const { data } = await response.json();
+
+          return data;
+
+      } catch(error) {
+          return customToast(error.message);
       }
+      
+    }
   };
 
   const likeState = () => {

@@ -5,26 +5,37 @@ const Comment = require("../models/Comment");
 exports.addPost = async (req, res, next) => {
     // requests the caption and uploaded files
     const { caption, files } = req.body;
-    // requests the users id
-    const user = req.user.id;
 
-    // create post object with caption, uploaded files and user
-    let post = await Post.create({ caption, files, user });
+    try {
+        // requests the users id
+        const user = req.user.id;
 
-    // request user by id and do things with it
-    await User.findByIdAndUpdate(req.user.id, {
-        $push: { posts: post._id },
-        $inc: { postCount: 1 },
-    });
+        // create post object with caption, uploaded files and user
+        let post = await Post.create({ caption, files, user });
 
-    // populate post with user avatar, name and username when post is uploaded
-    post = await post
-        .populate({ path: "user", select: "avatar username fullname" })
-        .execPopulate();
+        // request user by id and do things with it
+        await User.findByIdAndUpdate(req.user.id, {
+            $push: { posts: post._id },
+            $inc: { postCount: 1 },
+        });
 
-    res.status(200).json({ success: true, data: post });
+        // populate post with user avatar, name and username when post is uploaded
+        post = await post
+            .populate({ path: "user", select: "avatar username fullname" })
+            .execPopulate();
+
+        console.log(files);
+
+        res.status(200).json({ success: true, data: post });
+
+    } catch (error) {
+        return next({
+            message: error.message,
+            statusCode: error.message
+        })
+    }
     
-    Promise.resolve((req, res, next)).catch(next);
+    //Promise.resolve((req, res, next)).catch(next);
 };
 
 exports.deletePost = async (req, res, next) => {
@@ -61,40 +72,49 @@ exports.deletePost = async (req, res, next) => {
 };
 
 exports.likePost = async (req, res, next) => {
-    // make sure that the post exists
-    const post = await Post.findById(req.params.id);
 
-    // if post doesnt exist throw error message
-    if (!post) {
+    try {
+        // make sure that the post exists
+        const post = await Post.findById(req.params.id);
+
+        // if post doesnt exist throw error message
+        if (!post) {
+            return next({
+            message: `No post found for id ${req.params.id}`,
+            statusCode: 404,
+            });
+        }
+
+        // checks if the posts likes includes a like from the user id
+        if (post.likes.includes(req.user.id)) {
+            // finds the index of the user id in the likes array
+            const index = post.likes.indexOf(req.user.id);
+            // remove that index element
+            post.likes.splice(index, 1);
+            // subtract like count from post
+            post.likesCount = post.likesCount - 1;
+            await post.save();
+        } else {
+            // adds like from that user id into the array of likes
+            post.likes.push(req.user.id);
+            post.likesCount = post.likesCount + 1;
+            await post.save();
+        }
+
+        res.status(200).json({ success: true, data: {} });
+
+    } catch (error) {
         return next({
-        message: `No post found for id ${req.params.id}`,
-        statusCode: 404,
-        });
+        message: error.message,
+        statusCode: error.statusCode
+      });
     }
-
-    // checks if the posts likes includes a like from the user id
-    if (post.likes.includes(req.user.id)) {
-        // finds the index of the user id in the likes array
-        const index = post.likes.indexOf(req.user.id);
-        // remove that index element
-        post.likes.splice(index, 1);
-        // subtract like count from post
-        post.likesCount = post.likesCount - 1;
-        await post.save();
-    } else {
-        // adds like from that user id into the array of likes
-        post.likes.push(req.user.id);
-        post.likesCount = post.likesCount + 1;
-        await post.save();
-    }
-
-    res.status(200).json({ success: true, data: {} });
-    
-    Promise.resolve((req, res, next)).catch(next);
 };
 
 exports.addComment = async (req, res, next) => {
-    // request post id
+
+    try {
+        // request post id
     const post = await Post.findById(req.params.id);
 
     // throw error message if post doesnt exist
@@ -122,105 +142,122 @@ exports.addComment = async (req, res, next) => {
         .execPopulate();
 
     res.status(200).json({ success: true, data: comment });
+
+    } catch (error) {
+        next(error);
+    }
     
-    Promise.resolve((req, res, next)).catch(next);
+    
+    //Promise.resolve((req, res, next)).catch(next);
 };
 
-exports.deleteComment = async (req, res, next) => {
-    const post = await Post.findById(req.params.id);
+// exports.deleteComment = async (req, res, next) => {
+//     const post = await Post.findById(req.params.id);
 
-    if (!post) {
-        return next({
-        message: `No post found for id ${req.params.id}`,
-        statusCode: 404,
-        });
-    }
+//     if (!post) {
+//         return next({
+//         message: `No post found for id ${req.params.id}`,
+//         statusCode: 404,
+//         });
+//     }
 
-    // find post id and the comment id
-    const comment = await Comment.findOne({
-        _id: req.params.commentId,
-        post: req.params.id,
-    });
+//     // find post id and the comment id
+//     const comment = await Comment.findOne({
+//         _id: req.params.commentId,
+//         post: req.params.id,
+//     });
 
-    // throw error message if comment doesnt exist
-    if (!comment) {
-        return next({
-        message: `No comment found for id ${req.params.id}`,
-        statusCode: 404,
-        });
-    }
+//     // throw error message if comment doesnt exist
+//     if (!comment) {
+//         return next({
+//         message: `No comment found for id ${req.params.id}`,
+//         statusCode: 404,
+//         });
+//     }
 
-    // if the user does not own this comment throw error message
-    if (comment.user.toString() !== req.user.id) {
-        return next({
-        message: "You are not authorized to delete this comment",
-        statusCode: 401,
-        });
-    }
+//     // if the user does not own this comment throw error message
+//     if (comment.user.toString() !== req.user.id) {
+//         return next({
+//         message: "You are not authorized to delete this comment",
+//         statusCode: 401,
+//         });
+//     }
 
-    // remove the comment from the post
-    const index = post.comments.indexOf(comment._id);
-    post.comments.splice(index, 1);
-    post.commentsCount = post.commentsCount - 1;
-    await post.save();
+//     // remove the comment from the post
+//     const index = post.comments.indexOf(comment._id);
+//     post.comments.splice(index, 1);
+//     post.commentsCount = post.commentsCount - 1;
+//     await post.save();
 
-    await comment.remove();
+//     await comment.remove();
 
-    res.status(200).json({ success: true, data: {} });
+//     res.status(200).json({ success: true, data: {} });
     
-    Promise.resolve((req, res, next)).catch(next);
-};
+//     Promise.resolve((req, res, next)).catch(next);
+// };
 
 exports.getPost = async (req, res, next) => {
-    const post = await Post.findById(req.params.id)
-        .populate({
-        path: "comments",
-        select: "text",
-        populate: {
+
+    try {
+        const post = await Post.findById(req.params.id)
+            .populate({
+            path: "comments",
+            select: "text",
+            populate: {
+                path: "user",
+                select: "username avatar",
+            },
+            })
+            .populate({
             path: "user",
             select: "username avatar",
-        },
-        })
-        .populate({
-        path: "user",
-        select: "username avatar",
-        })
-        .lean()
-        .exec();
+            })
+            .lean()
+            .exec();
 
-    if (!post) {
-        return next({
-        message: `No post found for id ${req.params.id}`,
-        statusCode: 404,
-        });
-    }
-
-    // does the post belong to loggedin user?
-    post.isMine = req.user.id === post.user._id.toString();
-
-    // is the loggedin user liked the post?
-    const likes = post.likes.map((like) => like.toString());
-    post.isLiked = likes.includes(req.user.id);
-
-    // is the comment on the post belongs to the logged in user?
-    post.comments.forEach((comment) => {
-        comment.isCommentMine = false;
-
-        const userStr = comment.user._id.toString();
-        if (userStr === req.user.id) {
-        comment.isCommentMine = true;
+        if (!post) {
+            return next({
+            message: `No post found for id ${req.params.id}`,
+            statusCode: 404,
+            });
         }
-    });
 
-    res.status(200).json({ success: true, data: post });
-    
-    Promise.resolve((req, res, next)).catch(next);
+        // does the post belong to loggedin user?
+        post.isMine = req.user.id === post.user._id.toString();
+
+        // is the loggedin user liked the post?
+        const likes = post.likes.map((like) => like.toString());
+        post.isLiked = likes.includes(req.user.id);
+
+        // is the comment on the post belongs to the logged in user?
+        post.comments.forEach((comment) => {
+            comment.isCommentMine = false;
+
+            const userStr = comment.user._id.toString();
+            if (userStr === req.user.id) {
+            comment.isCommentMine = true;
+            }
+        });
+
+        res.status(200).json({ success: true, data: post });
+    } catch (error) {
+        return next({
+        message: error.message,
+        statusCode: error.statusCode
+      });
+    }
 };
 
 exports.getPosts = async (req, res, next) => {
-    const posts = await Post.find();
+    try {
+        const posts = await Post.find();
 
-    res.status(200).json({ success: true, data: posts });
-    
-    Promise.resolve((req, res, next)).catch(next);
+        res.status(200).json({ success: true, data: posts });
+
+    } catch (error) {
+        return next({
+        message: error.message,
+        statusCode: error.statusCode
+      });
+    }
 };

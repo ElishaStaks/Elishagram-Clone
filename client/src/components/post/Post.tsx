@@ -9,6 +9,7 @@ import LikePost from "./LikePost";
 import Comment from './comment/Comment';
 import { PostProps } from "../../Interfaces";
 import MoreIcon from "../iconComponents/dots";
+import customToast from "../../util/customToast";
 
 interface NewCommentsProps {
   _id: string;
@@ -35,35 +36,30 @@ const Post: React.FC<PostProps> = ({ post }) => {
   /**
    * Handles adding comments to posts which accepts keyboard event to see when user is typing
    */
-  const handleAddComment = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleAddComment = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // Enter key code
     if (event.keyCode === 13) {
       // prevents default action when submitting comment to the post
       event.preventDefault();
 
-      // request post data from server
-      fetch(`${post._id}/comments`, {
-          method: "POST",
-          headers: {
-            "Content-Type":"application/json",
-            "Authorization":"Bearer " + localStorage.getItem("token")
-          },
-          body: JSON.stringify({
-              text: comment
-          })
-      }).then(async (res: Response) => {
-            const data = await res.json();
+      const path: string = `/${post._id}/comments`;
+      const api: RequestInit = { method: "POST", headers: {
+          "Content-Type":"application/json",
+          "Authorization":"Bearer " + localStorage.getItem("token")
+      }, body: JSON.stringify({text: comment})}
 
-            if (res.ok) {
-                return data;
-            } else {
-                return Promise.reject(data);
-            }
-      }).then((response) => setNewComments([...newComments, response.data])); // after response is valid add that data to new comments state
+      try {
+          const response = await fetch(path, api);
 
-      // removes text from comment text area
-      setComment("");
-    }
+          const { data } = await response.json();
+          setNewComments([...newComments, data]); // after response is valid add that data to new comments state
+          // removes text from comment text area
+          setComment("");
+
+        } catch(error) {
+            return customToast(error.message);
+        }
+      }
   };
 
   return (

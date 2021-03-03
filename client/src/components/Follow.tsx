@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button } from '@material-ui/core';
+import customToast from "../util/customToast";
 
 export const Wrapper = styled("div")`
   .button {
@@ -30,48 +31,46 @@ const Follow: React.FC<FollowProps> = ({ hasButton, isFollowing, increaseFollowe
 
   useEffect(() => setFollowingState(isFollowing), [isFollowing]);
 
-  const handleFollow = () => {
+  const api: RequestInit = { method: "GET", headers: {
+        "Content-Type":"application/json",
+        "Authorization":"Bearer " + localStorage.getItem("token")
+  }}
+
+  const handleFollow = async () => {
     if (followingState) {
       setFollowingState(false);
       if (decreaseFollowers){
         decreaseFollowers();
       }
-      
-      fetch(`/${userId}/unfollow`, {
-        method: "GET",
-        headers: {
-          "Content-Type":"application/json",
-          "Authorization":"Bearer " + localStorage.getItem("token")
-        }
-      }).then(async (res) => {
-          const data = await res.json();
-          if (res.ok) {
-            return data;
-          } else {
-            return Promise.reject(data);
-          }
-      });
 
+      const path: string = `/${userId}/unfollow`;
+      try {
+          const response = await fetch(path, api);
+
+          const { data } = await response.json();
+
+          return data;
+
+      } catch(error) {
+          return customToast(error.message);
+      }
     } else {
       setFollowingState(true);
       if (increaseFollowers){
         increaseFollowers();
       }
-      
-      fetch(`/${userId}/follow`, {
-        method: "GET",
-        headers: {
-          "Content-Type":"application/json",
-          "Authorization":"Bearer " + localStorage.getItem("token")
-        }
-      }).then(async (res: Response) => {
-          const data = await res.json();
-          if (res.ok) {
-            return data;
-          } else {
-            return Promise.reject(data);
-          }
-      });
+
+      const path: string = `/${userId}/follow`;
+      try {
+          const response = await fetch(path, api);
+
+          const { data } = await response.json();
+
+          return data;
+
+      } catch(error) {
+          return customToast(error.message);
+      }
     }
   };
 

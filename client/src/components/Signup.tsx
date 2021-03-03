@@ -18,10 +18,10 @@ interface SignupCredentials {
 const Signup: React.FC<SignupProps> = props => {
     // Grab the global user context
     const { setUser } = useUserContext();
-    const [fullname, setFullname] = useState("");
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [fullname, setFullname] = useState<string>("");
+    const [username, setUsername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
     const signupCreds: SignupCredentials = {
         fullname: fullname,
@@ -30,25 +30,23 @@ const Signup: React.FC<SignupProps> = props => {
         password: password
     }
 
-    const userClient = useCallback( async () => {
-        const response = await fetch("/user", {
-            method: "GET",
-            headers: {
-                "Content-Type":"application/json",
-                "Authorization":"Bearer " + localStorage.getItem("token")
-            }
-        }).then(async (res: Response) => {
+    const fetchClient = useCallback( async () => {
+        const path: string = "/user";
+        const api: RequestInit = { method: "GET", headers: {
+            "Content-Type":"application/json",
+            "Authorization":"Bearer " + localStorage.getItem("token")
+        }}
 
-            const data = await res.json();
-            if (res.ok) {
-                return data;
-            } else {
-                return Promise.reject(data);
-            }
-        });
+        try {
+            const response = await fetch(path, api);
 
-        setUser(response.data);
-        localStorage.setItem("user", JSON.stringify(response.data));
+            const { data } = await response.json();
+
+            setUser(data);
+            localStorage.setItem("user", JSON.stringify(data));
+        } catch(error) {
+            return customToast(error.message);
+        }
     }, [setUser]);
 
     const handleSignup = useCallback(async (creds: SignupCredentials) => {
@@ -59,44 +57,33 @@ const Signup: React.FC<SignupProps> = props => {
         }
 
         const body = {
-            fullname: creds.fullname,
             username: creds.username,
+            fullname: creds.fullname,
             email: creds.email,
             password: creds.password
         };
+        const path: string = "/signup";
+        const api: RequestInit = { method: "POST", headers: {
+            "Content-Type":"application/json",
+            "Authorization":"Bearer " + localStorage.getItem("token")
+        }, body: JSON.stringify(body)}
 
         try {
-            console.log(body);
-            const { token } = await fetch("/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type":"application/json"
-                },
-                body: JSON.stringify(
-                    body
-                )
-            }).then(
-                async (res: Response) => {
-                const data = await res.json();
+            const response =  await fetch(path, api);
 
-                if (res.ok) {
-                    return data;
-                } else {
-                    return Promise.reject(data);
-                }
-            })
+            const { token } = await response.json();
             localStorage.setItem("token", token);
+
         } catch(error) {
             return customToast(error.message);
         }
-
-        userClient();
+        fetchClient();
 
         setFullname("");
         setUsername("");
         setEmail("");
         setPassword("");
-    }, [userClient, fullname, username, email, password]);
+    }, [fetchClient, fullname, username, email, password]);
 
     return (
         <FormWrapper onSubmit={(event) => {event.preventDefault(); handleSignup(signupCreds)}}>

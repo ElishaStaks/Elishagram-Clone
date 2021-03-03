@@ -6,6 +6,7 @@ import { UserCard } from "../components/UserCard";
 import { useNewsFeedContext } from "../contexts/NewsFeed/NewsFeedContext";
 import { useUserContext } from "../contexts/User/UserContext";
 import HomeWrapper from "../styles/HomeWrapper";
+import customToast from "../util/customToast";
 
 const Home: React.FC = () => {
     const { user, setUser } = useUserContext();
@@ -13,23 +14,24 @@ const Home: React.FC = () => {
     const [load, setLoad] = useState(true);
 
     useEffect(() => {
-        fetch('/newsfeed', {
-            method: "GET",
-            headers: {
+        const fetchProfile = async() => {
+            const path: string = "/newsfeed";
+            const api: RequestInit = { method: "GET", headers: {
                 "Authorization":"Bearer " + localStorage.getItem("token")
-            }
-        }).then(async (res: Response) => {
-            const data = await res.json();
+            }}
 
-            if (res.ok) {
-                return data;
-            } else {
-                return Promise.reject(data);
+            try {
+                const response = await fetch(path, api);
+                const { data } = await response.json();
+
+                setNewsfeed(data);
+                setLoad(false);
+            } catch (error) {
+                return customToast(error.message);
             }
-        }).then((response) => {
-            setNewsfeed(response.data);
-            setLoad(false);
-        }).catch(error => console.log(JSON.stringify(error)));
+        }
+
+        fetchProfile();
 
     }, [setUser, setNewsfeed]);
 

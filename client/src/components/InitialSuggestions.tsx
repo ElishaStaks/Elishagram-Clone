@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "../styles/Avatar";
+import customToast from "../util/customToast";
 import Follow from "./Follow";
 import LoadSpinner from "./LoadSpinner";
 
@@ -27,7 +28,6 @@ const Wrapper = styled("div")`
   button {
     font-size: 0.9rem;
     position: relative;
-    top: -5px;
   }
 
   @media screen and (max-width: 660px) {
@@ -64,27 +64,27 @@ const InitialSuggestions = () => {
   const [loading, setLoading] = useState(true);
   const history = useHistory();
 
+  const fetchUsers = useCallback(async() => {
+    const path = "/users";
+    const api: RequestInit = {method: "GET", headers: {
+      "Content-Type":"application/json",
+      "Authorization":"Bearer " + localStorage.getItem("token")
+    }}
+
+    try {
+      const response = await fetch(path, api);
+      const { data } = await response.json();
+
+      setUsers(data);
+      setLoading(false);
+    } catch(error) {
+      customToast(error.message);
+    }
+  }, []);
+
   useEffect(() => {
-      fetch(`/users`, {
-          method: "GET",
-          headers: {
-                "Content-Type":"application/json",
-                "Authorization":"Bearer " + localStorage.getItem("token")
-          }
-      }).then(async (res: Response) => {
-            const data = await res.json();
-            if (res.ok) {
-                return data;
-            } else {
-                return Promise.reject(data);
-            }
-        }).then((response) => {
-          setUsers(response.data);
-          setLoading(false);
-      }).catch(error => {
-          console.log(JSON.stringify(error));
-      })
-  }, [users]);
+      fetchUsers();
+  }, [fetchUsers]);
 
   if (loading) {
     return <LoadSpinner />;

@@ -13,7 +13,7 @@ const DeletePost: React.FC<DeletePostProps> = ({ postId, closeModal, goToHome })
     const { newsfeed, setNewsfeed } = useNewsFeedContext();
     const history = useHistory();
 
-    const handleDeletePost = () => {
+    const handleDeletePost = async () => {
         // closes the visible modal once post is deleted
         closeModal();
 
@@ -27,23 +27,18 @@ const DeletePost: React.FC<DeletePostProps> = ({ postId, closeModal, goToHome })
         customToast("Your post has been deleted successfully");
 
         // fetch request to thhe server to delete the post with the correct post id
-        fetch(`/${postId}`, {
-            method: "DELETE",
-            headers: {
-                "Authorization":"Bearer " + localStorage.getItem("token")
-            }
-        }).then(async (res: Response) => {
-            const data = await res.json(); 
+        const path: string = `/${postId}`;
+        const api: RequestInit = { method: "DELETE", headers: {
+            "Authorization":"Bearer " + localStorage.getItem("token")
+        }}
 
-            // checks if the response went through
-            if (res.ok) {
-                // accept 
-                return data;
-            } else {
-                // reject
-                return Promise.reject(data);
-            }
-        });
+        try {
+            const response = await fetch(path, api);
+            return response;
+
+        } catch(error) {
+            return customToast(error.message);
+        }
     };
 
     return (

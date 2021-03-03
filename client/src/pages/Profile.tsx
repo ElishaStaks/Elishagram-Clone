@@ -5,6 +5,7 @@ import ProfileHeader from "../components/profile/ProfileHeader";
 import PostPreview from "../components/profile/PostPreview";
 import LoadSpinner from "../components/LoadSpinner";
 import NoPostYet from "../components/NoPost";
+import customToast from "../util/customToast";
 
 const Wrapper = styled("div")`
   hr {
@@ -36,23 +37,24 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetch(`/${username}`, {
-        method: "GET",
-        headers: {
-            "Content-Type":"application/json",
-            "Authorization":"Bearer " + localStorage.getItem("token")
-        }
-    }).then(async (res: Response) => {
-        const data = await res.json();
-        if (res.ok) {
-            return data;
-        } else {
-            return Promise.reject(data);
-        }
-    }).then((res) => {
+    const fetchProfile = async() => {
+      const path: string = `/${username}`;
+      const api: RequestInit = { method: "GET", headers: {
+          "Content-Type":"application/json",
+          "Authorization":"Bearer " + localStorage.getItem("token")
+      }}
+
+      try {
+        const response = await fetch(path, api);
+        const { data } = await response.json();
+
+        setProfile(data);
         setLoading(false);
-        setProfile(res.data);
-      }).catch((err) => console.log(err));
+      } catch (error) {
+        return customToast(error.message);
+      }
+  }
+    fetchProfile();
   }, [username]);
 
     if (loading) {
