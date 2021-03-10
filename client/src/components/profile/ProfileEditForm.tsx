@@ -4,6 +4,33 @@ import { useUserContext } from '../../contexts/User/UserContext';
 import Avatar from '../../styles/Avatar';
 import { ProfileEditFormWrapper } from '../../styles/Profile';
 import customToast from '../../util/customToast';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+
+const useStyles = makeStyles({
+  root: {
+    border: '1px',
+    borderRadius: '4px',
+    borderColor: '#0095f6',
+    color: '#fff',
+    padding: '0.4rem 1rem',
+    marginTop: '1rem',
+    marginLeft: '1rem',
+  },
+
+  label: {
+    color: '#fff'
+  }
+});
+
+function ButtonStyle() {
+  const classes = useStyles();
+  return <Button classes={{
+    root: classes.root,
+    label: classes.label
+  }} type="submit" > Sumbit</Button>
+}
 
 const ProfileEditForm: React.FC = () => {
   const history = useHistory();
@@ -108,7 +135,8 @@ const ProfileEditForm: React.FC = () => {
 
               <div className="input-group">
                   <label><strong>Name</strong></label>
-                  <input type="text" value={fullname} onChange={(event) => setFullname(event.target.value)} />
+                  {/* <input type="text" value={fullname} onChange={(event) => setFullname(event.target.value)} /> */}
+                  <TextField variant="outlined" type="text" value={fullname} onChange={(event) => setFullname(event.target.value)}/>
               </div>
 
               {/* <div className="input-group">
@@ -117,7 +145,8 @@ const ProfileEditForm: React.FC = () => {
               </div> */}
               <div className="input-group textarea-group">
                   <label><strong>Bio</strong></label>
-                  <textarea cols={5} value={bio? bio : ""} onChange={(event) => setBio(event.target.value)}> </textarea>
+                  {/* <textarea cols={5} value={bio? bio : ""} onChange={(event) => setBio(event.target.value)}> </textarea> */}
+                  <TextField variant="outlined" rowsMax={4} value={bio? bio : ""} onChange={(event) => setBio(event.target.value)}/>
               </div>
 
               <div className="input-group">
@@ -125,9 +154,9 @@ const ProfileEditForm: React.FC = () => {
                   <p>Provide or change your personal information.</p>
 
                   <label><strong>Email</strong></label>
-                  <input type="text" value={email} onChange={(event) => setEmail(event.target.value)} />
+                  <TextField variant="outlined" type="text" value={email} onChange={(event) => setEmail(event.target.value)}/>
               </div>
-              <button className="submit-button">Submit</button>
+              <ButtonStyle />
           </form>
       </ProfileEditFormWrapper>
   );
